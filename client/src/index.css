@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Custom Properties for theming */
+:root {
+  --color-background: #FAFAFA;
+  --color-surface: #FFFFFF;
+  --color-border: #E5E7EB;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+  --toast-bg: #333;
+  --toast-color: #fff;
+}
+
+.dark {
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-border: #334155;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #64748B;
+  --toast-bg: #1E293B;
+  --toast-color: #F8FAFC;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Form input styling */
+input, select, textarea {
+  @apply border border-border rounded-lg px-4 py-2.5 bg-surface text-text-primary;
+  @apply focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent;
+  @apply transition-all duration-200;
+}
+
+input::placeholder, textarea::placeholder {
+  @apply text-text-muted;
+}
+
+/* Button base */
+.btn {
+  @apply px-6 py-2.5 rounded-lg font-medium transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.dark .btn {
+  @apply focus:ring-offset-slate-900;
+}
+
+.btn-primary {
+  @apply bg-accent text-white hover:bg-accent-hover;
+  @apply focus:ring-accent;
+}
+
+.btn-primary:disabled {
+  @apply bg-gray-300 dark:bg-gray-700 cursor-not-allowed hover:bg-gray-300 dark:hover:bg-gray-700;
+}
+
+.btn-secondary {
+  @apply bg-surface border border-border text-text-primary;
+  @apply hover:bg-gray-50 dark:hover:bg-slate-700 focus:ring-gray-400;
+}
+
+/* Card styling */
+.card {
+  @apply bg-surface rounded-xl border border-border p-6;
+  @apply shadow-sm transition-colors duration-200;
+}
+
+/* Badge styling */
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.badge-success {
+  @apply bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400;
+}
+
+.badge-warning {
+  @apply bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400;
+}
+
+.badge-error {
+  @apply bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400;
+}
+
+.badge-neutral {
+  @apply bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
