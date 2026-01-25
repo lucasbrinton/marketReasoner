@@ -6,27 +6,77 @@
   <img src="https://img.shields.io/badge/Vite-5.1-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
 </p>
 
-<h1 align="center">🧠 MarketMind</h1>
+<h1 align="center">MarketMind</h1>
 
 <p align="center">
-  <strong>AI-Powered Market Analysis Platform</strong><br/>
-  A full-stack React application demonstrating advanced AI integration, complex state management, and production-ready frontend architecture.
+  <strong>AI-Powered Market Analysis Platform</strong>
 </p>
 
 <p align="center">
-  <a href="#-live-demo">Live Demo</a> •
-  <a href="#-features">Features</a> •
-  <a href="#-tech-stack">Tech Stack</a> •
-  <a href="#-architecture">Architecture</a> •
-  <a href="#-getting-started">Getting Started</a> •
-  <a href="#-testing">Testing</a>
+  A full-stack React application demonstrating advanced AI integration, complex state management, and production-ready frontend architecture.
 </p>
 
 ---
 
-## 🎯 Project Purpose
+## Table of Contents
 
-This project showcases **senior frontend engineering skills** with emphasis on:
+- [Demo](#demo)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Installation & Setup](#installation--setup)
+- [Testing](#testing)
+- [Code Quality](#code-quality)
+- [Deployment](#deployment)
+- [Project Structure](#project-structure)
+- [Key Technical Highlights](#key-technical-highlights)
+- [License](#license)
+- [Author](#author)
+
+---
+
+## Demo
+
+### Dashboard Overview
+
+![Dashboard with Dark/Light Mode Toggle](assets/market-mind-overview-dark-light-mode.gif)
+_Interactive dashboard showcasing seamless dark/light mode switching with system preference detection_
+
+### Stock Analysis
+
+![Stock Analysis Module](assets/market-mind-stocks-dark-light-mode.gif)
+_AI-powered stock analysis with structured data rendering, displaying financial health, competitive moat, and risk assessment_
+
+### News Impact Analyzer
+
+![News Analysis Module](assets/market-mind-news.gif)
+_Real-time news sentiment analysis with second-order effects and risk evaluation_
+
+### Risk Profile Assessment
+
+![Risk Manager Module](assets/market-mind-risk.gif)
+_Personalized risk profiling with exposure bands, time horizons, and rebalancing strategies_
+
+### Strategy Simulator
+
+![Strategy Testing Module](assets/market-mind-strategy.gif)
+_Trading strategy simulation showing behavior across market regimes and failure mode analysis_
+
+### Stock Screener
+
+![AI Stock Screener](assets/market-mind-screener.gif)
+_Multi-factor AI screening with pass/fail criteria and comprehensive weakness assessment_
+
+### History Management
+
+![Analysis History](assets/market-mind-history-delete.gif)
+_localStorage-persisted analysis history with delete functionality and PDF export capability_
+
+---
+
+## Features
+
+This project showcases senior frontend engineering skills with emphasis on:
 
 - **AI Integration**: Consuming structured AI responses, handling latency, and rendering complex data
 - **TypeScript Excellence**: End-to-end type safety with Zod schemas and discriminated unions
@@ -34,78 +84,69 @@ This project showcases **senior frontend engineering skills** with emphasis on:
 - **UX Polish**: Loading states, error boundaries, offline detection, and toast notifications
 - **Production Readiness**: ESLint, Prettier, Vitest, Docker, and deployment configuration
 
-> ⚠️ **Note**: This is a portfolio demonstration project, not financial advice software.
+> **Note**: This is a portfolio demonstration project, not financial advice software.
+
+### Analysis Modules
+
+| Module             | Description                | AI Capabilities                                     |
+| ------------------ | -------------------------- | --------------------------------------------------- |
+| Stock Analyst      | Deep-dive company analysis | Financial health, competitive moat, risk assessment |
+| News Analyzer      | News impact evaluation     | Sentiment analysis, second-order effects            |
+| Risk Manager       | Portfolio risk profiling   | Exposure bands, rebalancing logic                   |
+| Strategy Simulator | Trading strategy testing   | Failure modes, emotional traps                      |
+| Stock Screener     | AI-driven screening        | Multi-factor pass/fail analysis                     |
+| Daily Brain        | Personalized routines      | Time allocation, consistency tips                   |
+
+### UX Features
+
+- Dark mode with system preference detection
+- Responsive design for all screen sizes
+- History persistence via localStorage
+- PDF export for analysis reports
+- Toast notifications for user feedback
+- Error boundaries for graceful failure handling
+- Offline detection with connection status
 
 ---
 
-## 🚀 Live Demo
-
-**Frontend**: [Coming Soon - Vercel Deploy](#)  
-**Backend API**: [Coming Soon - Render Deploy](#)
-
----
-
-## ✨ Features
-
-| Module | Description | AI Capabilities |
-|--------|-------------|-----------------|
-| **📊 Stock Analyst** | Deep-dive company analysis | Financial health, competitive moat, risk assessment |
-| **📰 News Analyzer** | News impact evaluation | Sentiment analysis, second-order effects |
-| **⚠️ Risk Manager** | Portfolio risk profiling | Exposure bands, rebalancing logic |
-| **🎯 Strategy Sim** | Trading strategy testing | Failure modes, emotional traps |
-| **🔍 Stock Screener** | AI-driven screening | Multi-factor pass/fail analysis |
-| **☀️ Daily Brain** | Personalized routines | Time allocation, consistency tips |
-
-### Key UX Features
-
-- 🌓 **Dark Mode** with system preference detection
-- 📱 **Responsive Design** for all screen sizes
-- 💾 **History Persistence** via localStorage
-- 📄 **PDF Export** for analysis reports
-- 🔔 **Toast Notifications** for user feedback
-- 🛡️ **Error Boundaries** for graceful failure handling
-- 📶 **Offline Detection** with connection status
-
----
-
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Frontend
 
-| Technology | Purpose |
-|------------|---------|
-| **React 18** | UI framework with concurrent features |
-| **TypeScript 5** | Static typing and enhanced DX |
-| **Tailwind CSS** | Utility-first styling |
-| **Vite** | Fast build tool and dev server |
-| **Framer Motion** | Smooth animations |
-| **React Hook Form** | Form state management |
-| **Zod** | Runtime validation and type inference |
-| **Recharts** | Data visualization |
-| **Axios** | HTTP client with interceptors |
+| Technology      | Purpose                               |
+| --------------- | ------------------------------------- |
+| React 18        | UI framework with concurrent features |
+| TypeScript 5    | Static typing and enhanced DX         |
+| Tailwind CSS    | Utility-first styling                 |
+| Vite            | Fast build tool and dev server        |
+| Framer Motion   | Smooth animations                     |
+| React Hook Form | Form state management                 |
+| Zod             | Runtime validation and type inference |
+| Recharts        | Data visualization                    |
+| Axios           | HTTP client with interceptors         |
 
 ### Backend
 
-| Technology | Purpose |
-|------------|---------|
-| **Node.js** | Runtime environment |
-| **Express** | API framework |
-| **Claude AI (Anthropic)** | LLM for analysis |
-| **Winston** | Production logging |
-| **Helmet** | Security headers |
+| Technology            | Purpose             |
+| --------------------- | ------------------- |
+| Node.js               | Runtime environment |
+| Express               | API framework       |
+| Claude AI (Anthropic) | LLM for analysis    |
+| Winston               | Production logging  |
+| Helmet                | Security headers    |
 
 ### Development
 
-| Tool | Purpose |
-|------|---------|
-| **Vitest** | Unit and component testing |
-| **ESLint** | Code linting |
-| **Prettier** | Code formatting |
-| **Docker** | Containerization |
+| Tool     | Purpose                    |
+| -------- | -------------------------- |
+| Vitest   | Unit and component testing |
+| ESLint   | Code linting               |
+| Prettier | Code formatting            |
+| Docker   | Containerization           |
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 ### Frontend-AI Integration Flow
 
@@ -114,21 +155,21 @@ This project showcases **senior frontend engineering skills** with emphasis on:
 │                        FRONTEND (React)                         │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐  │
-│  │  Form Input  │ => │  Zod Schema  │ => │  API Client      │  │
-│  │  (RHF)       │    │  Validation  │    │  (Axios + Types) │  │
-│  └──────────────┘    └──────────────┘    └────────┬─────────┘  │
-│                                                    │            │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                    STATE MACHINE                          │  │
-│  │  idle → loading → success/error                          │  │
-│  │  (Discriminated Union Pattern)                            │  │
-│  └──────────────────────────────────────────────────────────┘  │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐   │
+│  │  Form Input  │ => │  Zod Schema  │ => │  API Client      │   │
+│  │  (RHF)       │    │  Validation  │    │  (Axios + Types) │   │
+│  └──────────────┘    └──────────────┘    └────────┬─────────┘   │
+│                                                   │             │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                    STATE MACHINE                         │   │
+│  │  idle → loading → success/error                          │   │
+│  │  (Discriminated Union Pattern)                           │   │
+│  └──────────────────────────────────────────────────────────┘   │
 │                            ↓                                    │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐  │
-│  │ LoadingState │    │ ErrorState   │    │ ResultsCards     │  │
-│  │ (8-15s wait) │    │ (Retry UX)   │    │ (Structured AI)  │  │
-│  └──────────────┘    └──────────────┘    └──────────────────┘  │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐   │
+│  │ LoadingState │    │ ErrorState   │    │ ResultsCards     │   │
+│  │ (8-15s wait) │    │ (Retry UX)   │    │ (Structured AI)  │   │
+│  └──────────────┘    └──────────────┘    └──────────────────┘   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
                               ↓ HTTP
@@ -158,43 +199,9 @@ switch (state.status) {
 }
 ```
 
-### Project Structure
-
-```
-marketReasoner/
-├── client/                      # React Frontend
-│   ├── src/
-│   │   ├── api/                 # Typed API client
-│   │   │   └── client.ts        # Axios + error handling
-│   │   ├── components/
-│   │   │   ├── form/            # Form components
-│   │   │   ├── results/         # AI response cards
-│   │   │   └── states/          # Loading/Error states
-│   │   ├── hooks/               # Custom React hooks
-│   │   ├── pages/               # Route components
-│   │   ├── test/                # Test utilities & mocks
-│   │   ├── types/               # TypeScript definitions
-│   │   └── utils/               # Helpers (storage, etc.)
-│   ├── .eslintrc.cjs            # ESLint configuration
-│   ├── .prettierrc              # Prettier configuration
-│   └── vite.config.ts           # Vite + Vitest config
-│
-├── src/                         # Node.js Backend
-│   ├── config/                  # Environment validation
-│   ├── llm/                     # AI client abstraction
-│   ├── prompts/                 # Claude system prompts
-│   ├── schemas/                 # Zod output schemas
-│   ├── services/                # Business logic
-│   └── server.ts                # Express API
-│
-├── Dockerfile                   # Production container
-├── docker-compose.yml           # Local orchestration
-└── package.json                 # Root scripts
-```
-
 ---
 
-## 🚀 Getting Started
+## Installation & Setup
 
 ### Prerequisites
 
@@ -231,7 +238,7 @@ npm run dev:server   # Backend on :4000
 cd client && npm run dev  # Frontend on :5173
 ```
 
-### Access
+### Access Points
 
 - **Frontend**: http://localhost:5173
 - **API Health**: http://localhost:4000/api/health
@@ -239,7 +246,7 @@ cd client && npm run dev  # Frontend on :5173
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Frontend Tests
 
@@ -260,15 +267,15 @@ npm run test:ui
 
 Tests focus on AI integration scenarios:
 
-- ✅ Rendering structured AI responses
-- ✅ Loading state messaging (8-15s wait times)
-- ✅ Error handling and retry functionality
-- ✅ Form validation with Zod schemas
-- ✅ State transitions (idle → loading → success/error)
+- Rendering structured AI responses
+- Loading state messaging (8-15s wait times)
+- Error handling and retry functionality
+- Form validation with Zod schemas
+- State transitions (idle → loading → success/error)
 
 ---
 
-## 📏 Code Quality
+## Code Quality
 
 ### Linting & Formatting
 
@@ -301,7 +308,7 @@ npm run typecheck
 
 ---
 
-## 🐳 Deployment
+## Deployment
 
 ### Docker
 
@@ -325,67 +332,93 @@ npm run deploy:preview
 
 ### Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `ANTHROPIC_API_KEY` | Yes | Claude AI API key |
-| `NODE_ENV` | No | development/production |
-| `PORT` | No | API port (default: 4000) |
-| `FRONTEND_ORIGIN` | No | CORS origin |
+| Variable            | Required | Description              |
+| ------------------- | -------- | ------------------------ |
+| `ANTHROPIC_API_KEY` | Yes      | Claude AI API key        |
+| `NODE_ENV`          | No       | development/production   |
+| `PORT`              | No       | API port (default: 4000) |
+| `FRONTEND_ORIGIN`   | No       | CORS origin              |
 
 ---
 
-## 🎨 Screenshots
+## Project Structure
 
-### Dashboard
-*Home page with module navigation and API status*
-
-### Stock Analysis
-*AI-generated market analysis with structured data cards*
-
-### Dark Mode
-*Full dark mode support with system preference detection*
-
-> 📸 Screenshots to be added
+```
+marketReasoner/
+├── client/                      # React Frontend
+│   ├── src/
+│   │   ├── api/                 # Typed API client
+│   │   │   └── client.ts        # Axios + error handling
+│   │   ├── components/
+│   │   │   ├── form/            # Form components
+│   │   │   ├── results/         # AI response cards
+│   │   │   └── states/          # Loading/Error states
+│   │   ├── hooks/               # Custom React hooks
+│   │   ├── pages/               # Route components
+│   │   ├── test/                # Test utilities & mocks
+│   │   ├── types/               # TypeScript definitions
+│   │   └── utils/               # Helpers (storage, etc.)
+│   ├── .eslintrc.cjs            # ESLint configuration
+│   ├── .prettierrc              # Prettier configuration
+│   └── vite.config.ts           # Vite + Vitest config
+│
+├── src/                         # Node.js Backend
+│   ├── config/                  # Environment validation
+│   ├── llm/                     # AI client abstraction
+│   ├── prompts/                 # Claude system prompts
+│   ├── schemas/                 # Zod output schemas
+│   ├── services/                # Business logic
+│   └── server.ts                # Express API
+│
+├── Dockerfile                   # Production container
+├── docker-compose.yml           # Local orchestration
+└── package.json                 # Root scripts
+```
 
 ---
 
-## 🧠 Key Technical Highlights
+## Key Technical Highlights
 
-### 1. AI Response Handling
+### AI Response Handling
+
 - 60-second timeout for LLM operations
 - Structured error messages from API failures
 - Confidence levels displayed for all AI outputs
 
-### 2. Type Safety
+### Type Safety
+
 - Zod schemas shared between validation and types
 - Discriminated unions for state management
 - Type-inferred API responses
 
-### 3. Performance
+### Performance
+
 - Code splitting with manual chunks (vendor, UI, charts)
 - Terser minification for production
 - Optimized dependency pre-bundling
 
-### 4. UX Polish
+### UX Polish
+
 - Skeleton loading with AI processing messaging
 - Toast notifications for user feedback
 - localStorage persistence for history
 
 ---
 
-## 👤 Author
+## License
 
-**Lucas Brinton**
-
-- Twitter: [@LucasBrinton1](https://twitter.com/LucasBrinton1)
-- GitHub: [LucasBrinton](https://github.com/LucasBrinton)
-- LinkedIn: [Lucas Brinton](https://linkedin.com/in/lucasbrinton)
+This project is [MIT](LICENSE) licensed.
 
 ---
 
-## 📄 License
+## Author
 
-This project is [MIT](LICENSE) licensed.
+**Lucas Brinton**
+
+[![Twitter/X](https://img.shields.io/badge/Twitter-@LucasBrinton1-1da1f2.svg)](https://twitter.com/LucasBrinton1)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Lucas_Brinton-0077b5.svg)](https://www.linkedin.com/in/lucas-brinton-52aa32174/)
+
+**Contact:** [lucasbrintondev@gmail.com](mailto:lucasbrintondev@gmail.com)
 
 ---
 
