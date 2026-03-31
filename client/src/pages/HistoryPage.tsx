@@ -1,9 +1,3 @@
-/**
- * History Page
- * 
- * Displays saved analysis history with ability to view details and clear history.
- */
-
 import { useState, useEffect } from 'react';
 import { History, Trash2, FileX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -38,12 +32,20 @@ export function HistoryPage() {
     filter === 'all' ? true : item.type === filter
   );
 
-  const stockCount = history.filter(h => h.type === 'stock').length;
-  const newsCount = history.filter(h => h.type === 'news').length;
-  const riskCount = history.filter(h => h.type === 'risk').length;
-  const strategyCount = history.filter(h => h.type === 'strategy').length;
-  const screenerCount = history.filter(h => h.type === 'screener').length;
-  const dailyCount = history.filter(h => h.type === 'daily').length;
+  const counts = history.reduce<Record<string, number>>((acc, h) => {
+    acc[h.type] = (acc[h.type] || 0) + 1;
+    return acc;
+  }, {});
+
+  const filterTabs = [
+    { key: 'all', label: 'All', color: 'bg-accent' },
+    { key: 'stock', label: 'Stock', color: 'bg-blue-600' },
+    { key: 'news', label: 'News', color: 'bg-purple-600' },
+    { key: 'risk', label: 'Risk', color: 'bg-green-600' },
+    { key: 'strategy', label: 'Strategy', color: 'bg-amber-600' },
+    { key: 'screener', label: 'Screener', color: 'bg-cyan-600' },
+    { key: 'daily', label: 'Daily', color: 'bg-pink-600' },
+  ] as const;
 
   return (
     <motion.div
@@ -79,76 +81,19 @@ export function HistoryPage() {
       {/* Filter Tabs */}
       {history.length > 0 && (
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setFilter('all')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              filter === 'all'
-                ? 'bg-accent text-white'
-                : 'bg-surface border border-border text-text-secondary hover:text-text-primary'
-            }`}
-          >
-            All ({history.length})
-          </button>
-          <button
-            onClick={() => setFilter('stock')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              filter === 'stock'
-                ? 'bg-blue-600 text-white'
-                : 'bg-surface border border-border text-text-secondary hover:text-text-primary'
-            }`}
-          >
-            Stock ({stockCount})
-          </button>
-          <button
-            onClick={() => setFilter('news')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              filter === 'news'
-                ? 'bg-purple-600 text-white'
-                : 'bg-surface border border-border text-text-secondary hover:text-text-primary'
-            }`}
-          >
-            News ({newsCount})
-          </button>
-          <button
-            onClick={() => setFilter('risk')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              filter === 'risk'
-                ? 'bg-green-600 text-white'
-                : 'bg-surface border border-border text-text-secondary hover:text-text-primary'
-            }`}
-          >
-            Risk ({riskCount})
-          </button>
-          <button
-            onClick={() => setFilter('strategy')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              filter === 'strategy'
-                ? 'bg-amber-600 text-white'
-                : 'bg-surface border border-border text-text-secondary hover:text-text-primary'
-            }`}
-          >
-            Strategy ({strategyCount})
-          </button>
-          <button
-            onClick={() => setFilter('screener')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              filter === 'screener'
-                ? 'bg-cyan-600 text-white'
-                : 'bg-surface border border-border text-text-secondary hover:text-text-primary'
-            }`}
-          >
-            Screener ({screenerCount})
-          </button>
-          <button
-            onClick={() => setFilter('daily')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              filter === 'daily'
-                ? 'bg-pink-600 text-white'
-                : 'bg-surface border border-border text-text-secondary hover:text-text-primary'
-            }`}
-          >
-            Daily ({dailyCount})
-          </button>
+          {filterTabs.map(({ key, label, color }) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key as typeof filter)}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                filter === key
+                  ? `${color} text-white`
+                  : 'bg-surface border border-border text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              {label} ({key === 'all' ? history.length : counts[key] || 0})
+            </button>
+          ))}
         </div>
       )}
 
@@ -207,10 +152,13 @@ export function HistoryPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="clear-dialog-title"
               className="bg-surface rounded-xl p-6 max-w-md w-full shadow-xl"
               onClick={(e: React.MouseEvent) => e.stopPropagation()}
             >
-              <h3 className="text-lg font-semibold text-text-primary mb-2">
+              <h3 id="clear-dialog-title" className="text-lg font-semibold text-text-primary mb-2">
                 Clear All History?
               </h3>
               <p className="text-text-secondary mb-6">

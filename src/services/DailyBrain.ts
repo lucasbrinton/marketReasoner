@@ -1,10 +1,3 @@
-/**
- * Daily Brain Service
- * 
- * Generates daily market routines using AI reasoning.
- * Sixth AI-powered module in MarketMind.
- */
-
 import { ReasoningService } from './ReasoningService';
 import { 
   DailyRoutineInput, 

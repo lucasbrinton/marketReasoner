@@ -3,16 +3,6 @@ import path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-/**
- * Vite Configuration for MarketMind Frontend
- *
- * Production build optimizations:
- * - Code splitting for vendor, UI, and chart libraries
- * - Terser minification for smaller bundle size
- * - Path aliases for clean imports
- *
- * @see https://vitejs.dev/config/
- */
 export default defineConfig({
   plugins: [react()],
 

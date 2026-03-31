@@ -1,22 +1,7 @@
-/**
- * LLM Client Factory
- * 
- * Creates the appropriate LLM client based on environment configuration.
- * Prefers Claude (Anthropic) as the primary provider.
- */
-
 import { LLMClient } from './LLMClient';
 import { ClaudeClient } from './ClaudeClient';
 import { logger } from '../utils/logger';
 
-/**
- * Create the preferred LLM client based on available API keys.
- * 
- * Priority:
- * 1. ClaudeClient (if ANTHROPIC_API_KEY is set)
- * 
- * @returns Configured LLM client
- */
 export function createLLMClient(): LLMClient {
   const claudeClient = new ClaudeClient();
   if (claudeClient.isConfigured()) {
@@ -29,9 +14,6 @@ export function createLLMClient(): LLMClient {
   return claudeClient;
 }
 
-/**
- * Get information about available LLM providers
- */
 export function getLLMProviderStatus(): {
   preferred: string;
   configured: string[];

@@ -1,18 +1,13 @@
-/**
- * Dashboard Page - Home/Overview
- * 
- * Quick access to all modules with status and recent history.
- */
-
 import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  TrendingUp, 
-  Newspaper, 
-  Shield, 
-  Lightbulb, 
-  Search, 
-  Brain, 
+import {
+  TrendingUp,
+  Newspaper,
+  Shield,
+  Lightbulb,
+  Search,
+  Brain,
   History,
   CheckCircle2,
   XCircle,
@@ -22,53 +17,13 @@ import {
 import { checkHealth } from '../api/client';
 import { getHistory, HistoryItem } from '../utils/storage';
 
-interface DashboardPageProps {
-  onNavigate: (page: string) => void;
-}
-
 const modules = [
-  { 
-    key: 'stocks', 
-    label: 'Stock Analysis', 
-    icon: TrendingUp, 
-    color: 'blue',
-    description: 'Deep analysis of any stock with AI reasoning'
-  },
-  { 
-    key: 'news', 
-    label: 'News Impact', 
-    icon: Newspaper, 
-    color: 'purple',
-    description: 'Analyze how news affects stocks and sectors'
-  },
-  { 
-    key: 'risk', 
-    label: 'Risk Profiler', 
-    icon: Shield, 
-    color: 'green',
-    description: 'Build personalized risk management frameworks'
-  },
-  { 
-    key: 'strategy', 
-    label: 'Strategy Simulator', 
-    icon: Lightbulb, 
-    color: 'amber',
-    description: 'Simulate and stress-test trading strategies'
-  },
-  { 
-    key: 'screener', 
-    label: 'Stock Screener', 
-    icon: Search, 
-    color: 'cyan',
-    description: 'Screen stocks against quality criteria'
-  },
-  { 
-    key: 'daily', 
-    label: 'Daily Brain', 
-    icon: Brain, 
-    color: 'pink',
-    description: 'Generate daily market review routines'
-  }
+  { path: '/stocks', label: 'Stock Analysis', icon: TrendingUp, color: 'blue', description: 'Deep analysis of any stock with AI reasoning' },
+  { path: '/news', label: 'News Impact', icon: Newspaper, color: 'purple', description: 'Analyze how news affects stocks and sectors' },
+  { path: '/risk', label: 'Risk Profiler', icon: Shield, color: 'green', description: 'Build personalized risk management frameworks' },
+  { path: '/strategy', label: 'Strategy Simulator', icon: Lightbulb, color: 'amber', description: 'Simulate and stress-test trading strategies' },
+  { path: '/screener', label: 'Stock Screener', icon: Search, color: 'cyan', description: 'Screen stocks against quality criteria' },
+  { path: '/daily', label: 'Daily Brain', icon: Brain, color: 'pink', description: 'Generate daily market review routines' },
 ];
 
 const colorClasses: Record<string, { bg: string; text: string; border: string }> = {
@@ -80,7 +35,8 @@ const colorClasses: Record<string, { bg: string; text: string; border: string }>
   pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-600 dark:text-pink-400', border: 'border-pink-200 dark:border-pink-800' }
 };
 
-export function DashboardPage({ onNavigate }: DashboardPageProps) {
+export function DashboardPage() {
+  const navigate = useNavigate();
   const [apiStatus, setApiStatus] = useState<'loading' | 'ok' | 'error'>('loading');
   const [llmConfigured, setLlmConfigured] = useState(false);
   const [recentHistory, setRecentHistory] = useState<HistoryItem[]>([]);
@@ -180,11 +136,11 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
           const colors = colorClasses[module.color];
           return (
             <motion.button
-              key={module.key}
+              key={module.path}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + idx * 0.05 }}
-              onClick={() => onNavigate(module.key)}
+              onClick={() => navigate(module.path)}
               className={`card text-left border ${colors.border} hover:shadow-lg transition-all group`}
             >
               <div className="flex items-start gap-3">
@@ -218,12 +174,12 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
               <History className="w-5 h-5 text-accent" />
               <h3 className="font-semibold text-text-primary">Recent Analyses</h3>
             </div>
-            <button
-              onClick={() => onNavigate('history')}
+            <Link
+              to="/history"
               className="text-sm text-accent hover:underline"
             >
               View All →
-            </button>
+            </Link>
           </div>
           
           <div className="space-y-2">

@@ -1,56 +1,23 @@
-/**
- * News Page
- * 
- * Page for running news impact analysis.
- */
-
-import { useState } from 'react';
+import { useCallback } from 'react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+import { Newspaper } from 'lucide-react';
 import { NewsForm } from '../components/form/NewsForm';
 import { NewsAnalysisResults } from '../components/news-results/NewsAnalysisResults';
-import { NewsLoadingState } from '../components/states/NewsLoadingState';
+import { AnalysisLoadingState } from '../components/states/AnalysisLoadingState';
 import { ErrorState } from '../components/states/ErrorState';
-import { analyzeNews, AnalysisError } from '../api/client';
-import { NewsAnalysisRequest, NewsAnalysisResponse } from '../types';
+import { analyzeNews } from '../api/client';
 import { saveNewsAnalysis } from '../utils/storage';
-
-type PageState = 
-  | { status: 'idle' }
-  | { status: 'loading'; stockOrSector: string; request: NewsAnalysisRequest }
-  | { status: 'success'; response: NewsAnalysisResponse; request: NewsAnalysisRequest }
-  | { status: 'error'; message: string };
+import { useAnalysis } from '../hooks/useAnalysis';
+import type { NewsAnalysisRequest, NewsAnalysisResponse } from '../types';
 
 export function NewsPage() {
-  const [state, setState] = useState<PageState>({ status: 'idle' });
+  const saveFn = useCallback((request: NewsAnalysisRequest, response: NewsAnalysisResponse) => {
+    saveNewsAnalysis(request, response);
+    toast.success(`News analysis for ${request.stockOrSector} saved to history`);
+  }, []);
 
-  const handleSubmit = async (data: NewsAnalysisRequest) => {
-    setState({ status: 'loading', stockOrSector: data.stockOrSector, request: data });
-
-    try {
-      const response = await analyzeNews(data);
-      setState({ status: 'success', response, request: data });
-      
-      // Save to history
-      saveNewsAnalysis(data, response);
-      toast.success(`News analysis for ${data.stockOrSector} saved to history`);
-    } catch (error) {
-      if (error instanceof AnalysisError) {
-        toast.error(error.getUserMessage());
-        setState({ status: 'error', message: error.getUserMessage() });
-      } else {
-        toast.error('An unexpected error occurred');
-        setState({ 
-          status: 'error', 
-          message: 'An unexpected error occurred. Please try again.' 
-        });
-      }
-    }
-  };
-
-  const handleReset = () => {
-    setState({ status: 'idle' });
-  };
+  const { state, submit, reset } = useAnalysis(analyzeNews, saveFn);
 
   return (
     <motion.div
@@ -60,30 +27,34 @@ export function NewsPage() {
     >
       {/* Always show form unless showing results */}
       {state.status !== 'success' && (
-        <NewsForm 
-          onSubmit={handleSubmit} 
-          isLoading={state.status === 'loading'} 
+        <NewsForm
+          onSubmit={submit}
+          isLoading={state.status === 'loading'}
         />
       )}
 
       {/* Loading state */}
       {state.status === 'loading' && (
-        <NewsLoadingState stockOrSector={state.stockOrSector} />
+        <AnalysisLoadingState
+          icon={Newspaper}
+          title="Analyzing news..."
+          subtitle="Reasoning with AI — this may take 8–15 seconds. Evaluating market reaction, business relevance, and second-order effects."
+        />
       )}
 
       {/* Error state */}
       {state.status === 'error' && (
-        <ErrorState 
-          message={state.message} 
-          onRetry={handleReset} 
+        <ErrorState
+          message={state.message}
+          onRetry={reset}
         />
       )}
 
       {/* Results */}
       {state.status === 'success' && (
-        <NewsAnalysisResults 
-          response={state.response} 
-          onNewAnalysis={handleReset} 
+        <NewsAnalysisResults
+          response={state.response}
+          onNewAnalysis={reset}
         />
       )}
     </motion.div>

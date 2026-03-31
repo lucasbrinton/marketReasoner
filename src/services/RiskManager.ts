@@ -1,12 +1,3 @@
-/**
- * Risk Manager Module
- * 
- * AI-powered personal risk framework generation.
- * Creates structured risk management plans based on investor profiles.
- * 
- * IMPORTANT: This module NEVER provides specific asset recommendations or return predictions.
- */
-
 import { ReasoningService } from './ReasoningService';
 import {
   RiskProfile,
@@ -18,9 +9,6 @@ import {
 import { buildRiskProfilePrompt } from '../prompts/riskManagerPrompts';
 import { logger } from '../utils/logger';
 
-/**
- * RiskManager - Structured risk framework generation service
- */
 export class RiskManager {
   private readonly reasoningService: ReasoningService;
   private readonly moduleName = 'RiskManager';
@@ -29,12 +17,6 @@ export class RiskManager {
     this.reasoningService = reasoningService;
   }
 
-  /**
-   * Generate a risk profile based on structured input
-   * 
-   * @param input - Structured profile input (age, goals, drawdownTolerance, capitalStability)
-   * @returns Structured risk profile result or error
-   */
   async analyzeRisk(input: RiskProfileInput): Promise<RiskProfileResult> {
     logger.info('Starting risk profile generation', {
       age: input.age,
@@ -97,11 +79,4 @@ export class RiskManager {
       };
     }
   }
-}
-
-/**
- * Create a RiskManager instance with default configuration
- */
-export function createRiskManager(reasoningService: ReasoningService): RiskManager {
-  return new RiskManager(reasoningService);
 }

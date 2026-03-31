@@ -1,9 +1,3 @@
-/**
- * Analysis Results Display
- * 
- * Renders the full market analysis in organized cards.
- */
-
 import { useRef } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { AnalysisResponse } from '../../types';

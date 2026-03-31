@@ -1,14 +1,4 @@
-/**
- * News Analyzer Module
- * 
- * AI-powered news impact analysis for investment research.
- * Analyzes news items to understand potential market impact,
- * separating emotional reactions from business fundamentals.
- * 
- * IMPORTANT: This module NEVER provides buy/sell recommendations or price targets.
- */
-
-import { ReasoningService, ReasoningResult } from './ReasoningService';
+import { ReasoningService } from './ReasoningService';
 import {
   NewsAnalysis,
   NewsAnalysisInput,
@@ -19,9 +9,6 @@ import {
 import { buildNewsAnalysisPrompt } from '../prompts/newsAnalysisPrompts';
 import { logger } from '../utils/logger';
 
-/**
- * NewsAnalyzer - Structured news impact analysis service
- */
 export class NewsAnalyzer {
   private readonly reasoningService: ReasoningService;
   private readonly moduleName = 'NewsAnalyzer';
@@ -30,12 +17,6 @@ export class NewsAnalyzer {
     this.reasoningService = reasoningService;
   }
 
-  /**
-   * Analyze news impact based on structured input
-   * 
-   * @param input - Structured analysis input (newsText, stockOrSector)
-   * @returns Structured analysis result or error
-   */
   async analyzeNews(input: NewsAnalysisInput): Promise<NewsAnalysisResult> {
     logger.info('Starting news analysis', {
       stockOrSector: input.stockOrSector,
@@ -97,11 +78,4 @@ export class NewsAnalyzer {
       };
     }
   }
-}
-
-/**
- * Create a NewsAnalyzer instance with default configuration
- */
-export function createNewsAnalyzer(reasoningService: ReasoningService): NewsAnalyzer {
-  return new NewsAnalyzer(reasoningService);
 }

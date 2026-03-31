@@ -1,13 +1,4 @@
-/**
- * Market Analyst Module
- * 
- * AI-powered market analysis for investment research.
- * Analyzes business models, financial health, competitive position, and risks.
- * 
- * IMPORTANT: This module NEVER provides buy/sell recommendations or price targets.
- */
-
-import { ReasoningService, ReasoningResult } from './ReasoningService';
+import { ReasoningService } from './ReasoningService';
 import {
   MarketAnalysis,
   MarketAnalysisInput,
@@ -18,9 +9,6 @@ import {
 import { buildMarketAnalysisPrompt } from '../prompts/marketAnalysisPrompts';
 import { logger } from '../utils/logger';
 
-/**
- * MarketAnalyst - Structured market analysis service
- */
 export class MarketAnalyst {
   private readonly reasoningService: ReasoningService;
   private readonly moduleName = 'MarketAnalyst';
@@ -29,12 +17,6 @@ export class MarketAnalyst {
     this.reasoningService = reasoningService;
   }
 
-  /**
-   * Analyze a market position based on structured input
-   * 
-   * @param input - Structured analysis input (ticker, horizon, style, financialData)
-   * @returns Structured analysis result or error
-   */
   async analyzeMarket(input: MarketAnalysisInput): Promise<MarketAnalysisResult> {
     logger.info('Starting market analysis', {
       ticker: input.ticker,
@@ -97,11 +79,4 @@ export class MarketAnalyst {
       };
     }
   }
-}
-
-/**
- * Create a MarketAnalyst instance with default configuration
- */
-export function createMarketAnalyst(reasoningService: ReasoningService): MarketAnalyst {
-  return new MarketAnalyst(reasoningService);
 }

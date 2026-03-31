@@ -1,12 +1,3 @@
-/**
- * Strategy Simulator Service
- * 
- * Simulates strategy behavior across market regimes using AI reasoning.
- * Fourth AI-powered module in MarketMind.
- * 
- * IMPORTANT: This module NEVER provides specific trade signals or predictions.
- */
-
 import { ReasoningService } from './ReasoningService';
 import { 
   StrategySimulationInput, 
@@ -26,9 +17,6 @@ export class StrategySimulator {
     this.reasoningService = reasoningService;
   }
 
-  /**
-   * Simulate strategy behavior across market regimes
-   */
   async simulateStrategy(input: StrategySimulationInput): Promise<StrategySimulationResult> {
     logger.info('Starting strategy simulation', {
       strategyType: input.strategyType,
@@ -93,11 +81,4 @@ export class StrategySimulator {
       };
     }
   }
-}
-
-/**
- * Create a StrategySimulator instance with default configuration
- */
-export function createStrategySimulator(reasoningService: ReasoningService): StrategySimulator {
-  return new StrategySimulator(reasoningService);
 }

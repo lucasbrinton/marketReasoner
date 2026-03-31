@@ -1,12 +1,3 @@
-/**
- * Stock Screener Service
- * 
- * AI-powered stock screening against fundamental quality criteria.
- * Fifth AI-powered module in MarketMind.
- * 
- * IMPORTANT: This module NEVER provides buy/sell recommendations or predictions.
- */
-
 import { ReasoningService } from './ReasoningService';
 import { 
   StockScreenInput, 
@@ -27,9 +18,6 @@ export class StockScreener {
     this.reasoningService = reasoningService;
   }
 
-  /**
-   * Screen a stock against quality criteria
-   */
   async screenStock(input: StockScreenInput): Promise<StockScreenServiceResult> {
     logger.info('Starting stock screening', {
       ticker: input.ticker
@@ -103,11 +91,4 @@ export class StockScreener {
       };
     }
   }
-}
-
-/**
- * Create a StockScreener instance with default configuration
- */
-export function createStockScreener(reasoningService: ReasoningService): StockScreener {
-  return new StockScreener(reasoningService);
 }

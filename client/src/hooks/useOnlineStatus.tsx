@@ -1,9 +1,3 @@
-/**
- * Offline Detection Provider
- * 
- * Monitors network status and shows toast notifications.
- */
-
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { WifiOff, Wifi } from 'lucide-react';

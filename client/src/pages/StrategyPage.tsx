@@ -1,61 +1,35 @@
-/**
- * Strategy Simulator Page
- * 
- * Fourth AI-powered feature - simulates strategy behavior across market regimes
- */
-
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lightbulb, AlertCircle } from 'lucide-react';
+import { Lightbulb, AlertCircle, TrendingUp, AlertTriangle, Brain, HelpCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { StrategyLoadingState } from '../components/states/StrategyLoadingState';
+import { AnalysisLoadingState } from '../components/states/AnalysisLoadingState';
 import { StrategySimulationResults } from '../components/strategy-results/StrategySimulationResults';
 import { simulateStrategy } from '../api/client';
 import { saveStrategySimulation } from '../utils/storage';
-import { 
-  StrategySimulationRequest, 
+import { useAnalysis } from '../hooks/useAnalysis';
+import {
+  StrategySimulationRequest,
   StrategySimulationResponse,
   STRATEGY_TYPE_OPTIONS,
   RISK_LEVEL_OPTIONS
 } from '../types';
 
-type PageState = 'form' | 'loading' | 'results' | 'error';
-
 export function StrategyPage() {
-  const [pageState, setPageState] = useState<PageState>('form');
-  const [response, setResponse] = useState<StrategySimulationResponse | null>(null);
-  const [error, setError] = useState<string>('');
-  
   // Form state
   const [strategyType, setStrategyType] = useState<StrategySimulationRequest['strategyType']>('swing');
   const [riskLevel, setRiskLevel] = useState<StrategySimulationRequest['riskLevel']>('medium');
 
+  const saveFn = useCallback((request: StrategySimulationRequest, response: StrategySimulationResponse) => {
+    saveStrategySimulation(request, response);
+    toast.success('Strategy simulation complete!');
+  }, []);
+
+  const { state, submit, reset } = useAnalysis(simulateStrategy, saveFn);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setPageState('loading');
-    setError('');
-
     const request: StrategySimulationRequest = { strategyType, riskLevel };
-
-    try {
-      const result = await simulateStrategy(request);
-      setResponse(result);
-      setPageState('results');
-
-      // Save to history
-      saveStrategySimulation(request, result);
-      toast.success('Strategy simulation complete!');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to simulate strategy';
-      setError(message);
-      setPageState('error');
-      toast.error(message);
-    }
-  };
-
-  const handleNewSimulation = () => {
-    setResponse(null);
-    setPageState('form');
+    submit(request);
   };
 
   return (
@@ -80,7 +54,7 @@ export function StrategyPage() {
 
       {/* Content Area */}
       <AnimatePresence mode="wait">
-        {pageState === 'form' && (
+        {state.status === 'idle' && (
           <motion.div
             key="form"
             initial={{ opacity: 0, y: 20 }}
@@ -146,29 +120,40 @@ export function StrategyPage() {
           </motion.div>
         )}
 
-        {pageState === 'loading' && (
+        {state.status === 'loading' && (
           <motion.div
             key="loading"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <StrategyLoadingState />
+            <AnalysisLoadingState
+              icon={Lightbulb}
+              title="Simulating Strategy with AI"
+              subtitle="Analyzing behavior, risks, and uncertainties... (8-15s)"
+              steps={[
+                { icon: Lightbulb, label: 'Analyzing strategy type...' },
+                { icon: TrendingUp, label: 'Simulating market regimes...' },
+                { icon: AlertTriangle, label: 'Identifying failure modes...' },
+                { icon: Brain, label: 'Detecting emotional traps...' },
+                { icon: HelpCircle, label: 'Cataloging unknowns...' },
+              ]}
+            />
           </motion.div>
         )}
 
-        {pageState === 'results' && response && (
+        {state.status === 'success' && (
           <motion.div
             key="results"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <StrategySimulationResults response={response} onNewSimulation={handleNewSimulation} />
+            <StrategySimulationResults response={state.response} onNewSimulation={reset} />
           </motion.div>
         )}
 
-        {pageState === 'error' && (
+        {state.status === 'error' && (
           <motion.div
             key="error"
             initial={{ opacity: 0, y: 20 }}
@@ -184,10 +169,10 @@ export function StrategyPage() {
                 Simulation Failed
               </h3>
               <p className="text-sm text-text-muted mb-6 max-w-md">
-                {error}
+                {state.message}
               </p>
               <button
-                onClick={handleNewSimulation}
+                onClick={reset}
                 className="btn btn-primary"
               >
                 Try Again

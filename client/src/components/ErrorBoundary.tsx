@@ -1,9 +1,3 @@
-/**
- * Error Boundary Component
- * 
- * Catches and displays errors gracefully in production.
- */
-
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 

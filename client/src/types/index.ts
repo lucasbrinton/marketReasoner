@@ -1,38 +1,5 @@
-/**
- * MarketMind Frontend Type Definitions
- *
- * @module types
- * @description
- * Comprehensive TypeScript types for the MarketMind frontend application.
- * All types mirror backend Zod schemas to ensure end-to-end type safety.
- *
- * ## Architecture
- * - Request schemas: Zod schemas for form validation
- * - Response interfaces: TypeScript interfaces for API responses
- * - Constants: Typed arrays for dropdown options
- *
- * ## AI Response Structure
- * Each analysis module returns structured data with:
- * - Domain-specific analysis fields
- * - Confidence level (low/medium/high)
- * - Metadata (timestamp, input params)
- *
- * @example
- * // Using request schema for form validation
- * const result = AnalysisRequestSchema.safeParse(formData);
- * if (!result.success) {
- *   // Handle validation errors
- * }
- *
- * // Using response types for rendering
- * function renderAnalysis(data: MarketAnalysis) {
- *   return data.financial_health.strengths.map(s => <li>{s}</li>);
- * }
- */
-
 import { z } from 'zod';
 
-// Analysis request schema (matches backend)
 export const AnalysisRequestSchema = z.object({
   ticker: z.string().min(1, 'Ticker is required').max(10),
   horizon: z.enum(['short', 'medium', 'long'], {
@@ -45,7 +12,6 @@ export const AnalysisRequestSchema = z.object({
 
 export type AnalysisRequest = z.infer<typeof AnalysisRequestSchema>;
 
-// News analysis request schema (matches backend)
 export const NewsAnalysisRequestSchema = z.object({
   newsText: z.string()
     .min(20, 'News text must be at least 20 characters')
@@ -57,7 +23,6 @@ export const NewsAnalysisRequestSchema = z.object({
 
 export type NewsAnalysisRequest = z.infer<typeof NewsAnalysisRequestSchema>;
 
-// Risk profile request schema (matches backend)
 export const RiskProfileRequestSchema = z.object({
   age: z.number()
     .int()
@@ -76,7 +41,6 @@ export const RiskProfileRequestSchema = z.object({
 
 export type RiskProfileRequest = z.infer<typeof RiskProfileRequestSchema>;
 
-// Strategy simulation request schema (matches backend)
 export const StrategySimulationRequestSchema = z.object({
   strategyType: z.enum(['swing', 'intraday', 'position'], {
     required_error: 'Strategy type is required'
@@ -88,7 +52,6 @@ export const StrategySimulationRequestSchema = z.object({
 
 export type StrategySimulationRequest = z.infer<typeof StrategySimulationRequestSchema>;
 
-// Stock screen request schema (matches backend)
 export const StockScreenRequestSchema = z.object({
   ticker: z.string()
     .min(1, 'Ticker is required')
@@ -97,7 +60,6 @@ export const StockScreenRequestSchema = z.object({
 
 export type StockScreenRequest = z.infer<typeof StockScreenRequestSchema>;
 
-// Market analysis response (mirrors backend MarketAnalysis)
 export interface MarketAnalysis {
   business_model: string;
   financial_health: {
@@ -117,7 +79,6 @@ export interface MarketAnalysis {
   confidence_level: 'low' | 'medium' | 'high';
 }
 
-// News analysis response (mirrors backend NewsAnalysis)
 export interface NewsAnalysis {
   short_term_impact: {
     emotional: string;
@@ -132,7 +93,6 @@ export interface NewsAnalysis {
   confidence_level: 'low' | 'medium' | 'high';
 }
 
-// Risk profile response (mirrors backend RiskProfile)
 export interface RiskProfile {
   exposure_bands: {
     equities: string;
@@ -151,7 +111,6 @@ export interface RiskProfile {
   confidence_level: 'low' | 'medium' | 'high';
 }
 
-// Strategy simulation response (mirrors backend StrategySimulation)
 export interface StrategySimulation {
   behavior_in_regimes: {
     trend: string;
@@ -165,13 +124,11 @@ export interface StrategySimulation {
   confidence_level: 'low' | 'medium' | 'high';
 }
 
-// Stock screen criterion result
 export interface CriterionResult {
   pass: boolean;
   explanation: string;
 }
 
-// Stock screen response (mirrors backend StockScreenResult)
 export interface StockScreenResult {
   valuation: CriterionResult;
   growth_prospects: CriterionResult;
@@ -183,7 +140,6 @@ export interface StockScreenResult {
   confidence_level: 'low' | 'medium' | 'high';
 }
 
-// API response wrapper
 export interface AnalysisResponse {
   success: true;
   data: MarketAnalysis;
@@ -195,7 +151,6 @@ export interface AnalysisResponse {
   };
 }
 
-// News analysis API response wrapper
 export interface NewsAnalysisResponse {
   success: true;
   data: NewsAnalysis;
@@ -206,7 +161,6 @@ export interface NewsAnalysisResponse {
   };
 }
 
-// Risk profile API response wrapper
 export interface RiskProfileResponse {
   success: true;
   data: RiskProfile;
@@ -218,7 +172,6 @@ export interface RiskProfileResponse {
   };
 }
 
-// Strategy simulation API response wrapper
 export interface StrategySimulationResponse {
   success: true;
   data: StrategySimulation;
@@ -229,7 +182,6 @@ export interface StrategySimulationResponse {
   };
 }
 
-// Stock screen API response wrapper
 export interface StockScreenResponse {
   success: true;
   data: StockScreenResult;
@@ -239,7 +191,6 @@ export interface StockScreenResponse {
   };
 }
 
-// API error response
 export interface ApiError {
   error: string;
   message: string;
@@ -247,7 +198,6 @@ export interface ApiError {
   availableTickers?: string[];
 }
 
-// Ticker info from API
 export interface TickerInfo {
   ticker: string;
   sector?: string;
@@ -255,38 +205,32 @@ export interface TickerInfo {
   defaultStyle?: string;
 }
 
-// Available tickers
 export const AVAILABLE_TICKERS = ['AAPL', 'MSFT', 'JPM', 'NVDA', 'WEAK'] as const;
 
-// Horizon options
 export const HORIZON_OPTIONS = [
   { value: 'short', label: 'Short (0-6 months)' },
   { value: 'medium', label: 'Medium (6-18 months)' },
   { value: 'long', label: 'Long (18+ months)' }
 ] as const;
 
-// Style options
 export const STYLE_OPTIONS = [
   { value: 'growth', label: 'Growth' },
   { value: 'value', label: 'Value' },
   { value: 'quality', label: 'Quality' }
 ] as const;
 
-// Capital stability options
 export const CAPITAL_STABILITY_OPTIONS = [
   { value: 'low', label: 'Low - Can tolerate significant volatility' },
   { value: 'medium', label: 'Medium - Moderate stability preferred' },
   { value: 'high', label: 'High - Prioritize capital preservation' }
 ] as const;
 
-// Strategy type options
 export const STRATEGY_TYPE_OPTIONS = [
   { value: 'swing', label: 'Swing Trading' },
   { value: 'intraday', label: 'Intraday Trading' },
   { value: 'position', label: 'Position Trading' }
 ] as const;
 
-// Risk level options
 export const RISK_LEVEL_OPTIONS = [
   { value: 'low', label: 'Low Risk' },
   { value: 'medium', label: 'Medium Risk' },
@@ -297,12 +241,10 @@ export const RISK_LEVEL_OPTIONS = [
 // Daily Routine Types
 // ============================================================================
 
-// Daily routine request
 export interface DailyRoutineRequest {
   preferences?: string;
 }
 
-// Routine steps
 export interface RoutineSteps {
   step1: string;
   step2: string;
@@ -313,7 +255,6 @@ export interface RoutineSteps {
   step7?: string;
 }
 
-// Daily routine result
 export interface DailyRoutineResult {
   routine_steps: RoutineSteps;
   time_allocation: string;
@@ -322,7 +263,6 @@ export interface DailyRoutineResult {
   confidence_level: 'low' | 'medium' | 'high';
 }
 
-// Daily routine API response wrapper
 export interface DailyRoutineResponse {
   success: true;
   data: DailyRoutineResult;

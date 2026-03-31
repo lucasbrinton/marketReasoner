@@ -1,7 +1,3 @@
-/**
- * LocalStorage utilities for MarketMind history persistence
- */
-
 import { AnalysisResponse, NewsAnalysisResponse, RiskProfileResponse, StrategySimulationResponse, StockScreenResponse, DailyRoutineResponse, AnalysisRequest, NewsAnalysisRequest, RiskProfileRequest, StrategySimulationRequest, StockScreenRequest, DailyRoutineRequest } from '../types';
 
 // Storage keys
@@ -60,20 +56,10 @@ export interface DailyHistoryItem {
 
 export type HistoryItem = StockHistoryItem | NewsHistoryItem | RiskHistoryItem | StrategyHistoryItem | ScreenerHistoryItem | DailyHistoryItem;
 
-/**
- * Generate a simple UUID v4
- */
 export function generateId(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+  return crypto.randomUUID();
 }
 
-/**
- * Get all history items from localStorage
- */
 export function getHistory(): HistoryItem[] {
   try {
     const stored = localStorage.getItem(HISTORY_KEY);
@@ -85,105 +71,47 @@ export function getHistory(): HistoryItem[] {
   }
 }
 
-/**
- * Save a stock analysis to history
- */
+function saveToHistory<TInput, TOutput>(
+  type: HistoryItem['type'],
+  input: TInput,
+  output: TOutput
+): HistoryItem {
+  const item = {
+    id: generateId(),
+    type,
+    input,
+    output,
+    timestamp: new Date().toISOString()
+  } as HistoryItem;
+
+  addToHistory(item);
+  return item;
+}
+
 export function saveStockAnalysis(input: AnalysisRequest, output: AnalysisResponse): HistoryItem {
-  const item: StockHistoryItem = {
-    id: generateId(),
-    type: 'stock',
-    input,
-    output,
-    timestamp: new Date().toISOString()
-  };
-  
-  addToHistory(item);
-  return item;
+  return saveToHistory('stock', input, output);
 }
 
-/**
- * Save a news analysis to history
- */
 export function saveNewsAnalysis(input: NewsAnalysisRequest, output: NewsAnalysisResponse): HistoryItem {
-  const item: NewsHistoryItem = {
-    id: generateId(),
-    type: 'news',
-    input,
-    output,
-    timestamp: new Date().toISOString()
-  };
-  
-  addToHistory(item);
-  return item;
+  return saveToHistory('news', input, output);
 }
 
-/**
- * Save a risk analysis to history
- */
 export function saveRiskAnalysis(input: RiskProfileRequest, output: RiskProfileResponse): HistoryItem {
-  const item: RiskHistoryItem = {
-    id: generateId(),
-    type: 'risk',
-    input,
-    output,
-    timestamp: new Date().toISOString()
-  };
-  
-  addToHistory(item);
-  return item;
+  return saveToHistory('risk', input, output);
 }
 
-/**
- * Save a strategy simulation to history
- */
 export function saveStrategySimulation(input: StrategySimulationRequest, output: StrategySimulationResponse): HistoryItem {
-  const item: StrategyHistoryItem = {
-    id: generateId(),
-    type: 'strategy',
-    input,
-    output,
-    timestamp: new Date().toISOString()
-  };
-  
-  addToHistory(item);
-  return item;
+  return saveToHistory('strategy', input, output);
 }
 
-/**
- * Save a stock screening to history
- */
 export function saveScreenerResult(input: StockScreenRequest, output: StockScreenResponse): HistoryItem {
-  const item: ScreenerHistoryItem = {
-    id: generateId(),
-    type: 'screener',
-    input,
-    output,
-    timestamp: new Date().toISOString()
-  };
-  
-  addToHistory(item);
-  return item;
+  return saveToHistory('screener', input, output);
 }
 
-/**
- * Save a daily routine to history
- */
 export function saveDailyResult(input: DailyRoutineRequest, output: DailyRoutineResponse): HistoryItem {
-  const item: DailyHistoryItem = {
-    id: generateId(),
-    type: 'daily',
-    input,
-    output,
-    timestamp: new Date().toISOString()
-  };
-  
-  addToHistory(item);
-  return item;
+  return saveToHistory('daily', input, output);
 }
 
-/**
- * Add an item to history, pruning oldest if exceeds max
- */
 function addToHistory(item: HistoryItem): void {
   const history = getHistory();
   
@@ -202,24 +130,15 @@ function addToHistory(item: HistoryItem): void {
   }
 }
 
-/**
- * Clear all history
- */
 export function clearHistory(): void {
   localStorage.removeItem(HISTORY_KEY);
 }
 
-/**
- * Delete a specific history item
- */
 export function deleteHistoryItem(id: string): void {
   const history = getHistory().filter(item => item.id !== id);
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 }
 
-/**
- * Get dark mode preference
- */
 export function getDarkMode(): boolean {
   const stored = localStorage.getItem(DARK_MODE_KEY);
   if (stored === null) {
@@ -229,9 +148,6 @@ export function getDarkMode(): boolean {
   return stored === 'true';
 }
 
-/**
- * Set dark mode preference
- */
 export function setDarkMode(enabled: boolean): void {
   localStorage.setItem(DARK_MODE_KEY, String(enabled));
 }

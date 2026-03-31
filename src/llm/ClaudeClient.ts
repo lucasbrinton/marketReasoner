@@ -1,10 +1,3 @@
-/**
- * Claude Client Implementation
- * 
- * Implements LLMClient interface for Anthropic's Claude API.
- * Uses native fetch with exact Anthropic API structure.
- */
-
 import {
   LLMClient,
   LLMRequest,
@@ -20,9 +13,6 @@ const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
 const DEFAULT_MAX_TOKENS = 4096;
 const DEFAULT_TEMPERATURE = 0.3;
 
-/**
- * Anthropic API response structure
- */
 interface AnthropicResponse {
   id: string;
   type: string;
@@ -40,9 +30,6 @@ interface AnthropicResponse {
   };
 }
 
-/**
- * Anthropic API error response
- */
 interface AnthropicErrorResponse {
   type: string;
   error: {

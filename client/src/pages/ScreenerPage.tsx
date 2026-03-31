@@ -1,61 +1,46 @@
-/**
- * Stock Screener Page
- */
-
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Info } from 'lucide-react';
+import { Search, Info, DollarSign, TrendingUp, Shield, Award, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { screenStock } from '../api/client';
-import { StockScreenResponse } from '../types';
 import { saveScreenerResult } from '../utils/storage';
-import { ScreenerLoadingState } from '../components/states/ScreenerLoadingState';
+import { useAnalysis } from '../hooks/useAnalysis';
+import { AnalysisLoadingState } from '../components/states/AnalysisLoadingState';
 import { ScreenerResults } from '../components/screener-results/ScreenerResults';
+import type { StockScreenRequest, StockScreenResponse } from '../types';
 
 export function ScreenerPage() {
   const [ticker, setTicker] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<StockScreenResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  const saveFn = useCallback((request: StockScreenRequest, response: StockScreenResponse) => {
+    saveScreenerResult(request, response);
+    toast.success(`${request.ticker} screening complete!`);
+  }, []);
+
+  const { state, submit, reset } = useAnalysis(screenStock, saveFn);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const trimmedTicker = ticker.trim().toUpperCase();
     if (!trimmedTicker) {
       toast.error('Please enter a ticker symbol');
       return;
     }
 
-    setLoading(true);
-    setError(null);
-    setResponse(null);
-
-    try {
-      const result = await screenStock({ ticker: trimmedTicker });
-      setResponse(result);
-      saveScreenerResult({ ticker: trimmedTicker }, result);
-      toast.success(`${trimmedTicker} screening complete!`);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to screen stock';
-      setError(message);
-      toast.error(message);
-    } finally {
-      setLoading(false);
-    }
+    submit({ ticker: trimmedTicker });
   };
 
   const handleNewScreen = () => {
     setTicker('');
-    setResponse(null);
-    setError(null);
+    reset();
   };
 
   // Show results if available
-  if (response) {
+  if (state.status === 'success') {
     return (
       <div className="space-y-6">
-        <ScreenerResults response={response} onNewScreen={handleNewScreen} />
+        <ScreenerResults response={state.response} onNewScreen={handleNewScreen} />
       </div>
     );
   }
@@ -119,12 +104,12 @@ export function ScreenerPage() {
             onChange={(e) => setTicker(e.target.value.toUpperCase())}
             placeholder="e.g., AAPL, MSFT, GOOGL"
             className="input flex-1"
-            disabled={loading}
+            disabled={state.status === 'loading'}
             maxLength={10}
           />
           <button
             type="submit"
-            disabled={loading || !ticker.trim()}
+            disabled={state.status === 'loading' || !ticker.trim()}
             className="btn btn-primary flex items-center gap-2"
           >
             <Search className="w-4 h-4" />
@@ -137,16 +122,30 @@ export function ScreenerPage() {
       </motion.form>
 
       {/* Loading State */}
-      {loading && <ScreenerLoadingState />}
+      {state.status === 'loading' && (
+        <AnalysisLoadingState
+          icon={Search}
+          title="Screening Stock with AI"
+          subtitle="Evaluating against quality criteria... (8-15s)"
+          steps={[
+            { icon: Search, label: 'Analyzing stock data...' },
+            { icon: DollarSign, label: 'Evaluating valuation...' },
+            { icon: TrendingUp, label: 'Assessing growth prospects...' },
+            { icon: Shield, label: 'Checking financial health...' },
+            { icon: Award, label: 'Reviewing competitive advantage...' },
+            { icon: AlertTriangle, label: 'Identifying weaknesses...' },
+          ]}
+        />
+      )}
 
       {/* Error State */}
-      {error && (
+      {state.status === 'error' && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="card border-error bg-error/5"
         >
-          <p className="text-sm text-error">{error}</p>
+          <p className="text-sm text-error">{state.message}</p>
           <button
             onClick={handleNewScreen}
             className="btn btn-secondary mt-4"

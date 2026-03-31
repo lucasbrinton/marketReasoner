@@ -1,51 +1,22 @@
-/**
- * Risk Manager Page
- * 
- * Personal risk framework generator - the third AI-powered feature
- */
-
-import { useState } from 'react';
+import { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, AlertCircle } from 'lucide-react';
+import { Shield, AlertCircle, TrendingUp, AlertTriangle, Scale, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { RiskForm } from '../components/form/RiskForm';
-import { RiskLoadingState } from '../components/states/RiskLoadingState';
+import { AnalysisLoadingState } from '../components/states/AnalysisLoadingState';
 import { RiskProfileResults } from '../components/risk-results/RiskProfileResults';
 import { analyzeRisk } from '../api/client';
 import { saveRiskAnalysis } from '../utils/storage';
-import { RiskProfileRequest, RiskProfileResponse } from '../types';
-
-type PageState = 'form' | 'loading' | 'results' | 'error';
+import { useAnalysis } from '../hooks/useAnalysis';
+import type { RiskProfileRequest, RiskProfileResponse } from '../types';
 
 export function RiskPage() {
-  const [pageState, setPageState] = useState<PageState>('form');
-  const [response, setResponse] = useState<RiskProfileResponse | null>(null);
-  const [error, setError] = useState<string>('');
+  const saveFn = useCallback((request: RiskProfileRequest, response: RiskProfileResponse) => {
+    saveRiskAnalysis(request, response);
+    toast.success('Risk framework generated!');
+  }, []);
 
-  const handleSubmit = async (data: RiskProfileRequest) => {
-    setPageState('loading');
-    setError('');
-
-    try {
-      const result = await analyzeRisk(data);
-      setResponse(result);
-      setPageState('results');
-
-      // Save to history
-      saveRiskAnalysis(data, result);
-      toast.success('Risk framework generated!');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to generate risk framework';
-      setError(message);
-      setPageState('error');
-      toast.error(message);
-    }
-  };
-
-  const handleNewAnalysis = () => {
-    setResponse(null);
-    setPageState('form');
-  };
+  const { state, submit, reset } = useAnalysis(analyzeRisk, saveFn);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -69,40 +40,51 @@ export function RiskPage() {
 
       {/* Content Area */}
       <AnimatePresence mode="wait">
-        {pageState === 'form' && (
+        {state.status === 'idle' && (
           <motion.div
             key="form"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <RiskForm onSubmit={handleSubmit} isLoading={false} />
+            <RiskForm onSubmit={submit} isLoading={false} />
           </motion.div>
         )}
 
-        {pageState === 'loading' && (
+        {state.status === 'loading' && (
           <motion.div
             key="loading"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <RiskLoadingState />
+            <AnalysisLoadingState
+              icon={Shield}
+              title="Building Your Risk Framework"
+              subtitle="Creating a personalized risk management plan..."
+              steps={[
+                { icon: Shield, label: 'Analyzing risk tolerance...' },
+                { icon: TrendingUp, label: 'Calculating exposure bands...' },
+                { icon: AlertTriangle, label: 'Setting risk limits...' },
+                { icon: Scale, label: 'Building rebalancing logic...' },
+                { icon: Clock, label: 'Defining time horizons...' },
+              ]}
+            />
           </motion.div>
         )}
 
-        {pageState === 'results' && response && (
+        {state.status === 'success' && (
           <motion.div
             key="results"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <RiskProfileResults response={response} onNewAnalysis={handleNewAnalysis} />
+            <RiskProfileResults response={state.response} onNewAnalysis={reset} />
           </motion.div>
         )}
 
-        {pageState === 'error' && (
+        {state.status === 'error' && (
           <motion.div
             key="error"
             initial={{ opacity: 0, y: 20 }}
@@ -118,10 +100,10 @@ export function RiskPage() {
                 Analysis Failed
               </h3>
               <p className="text-sm text-text-muted mb-6 max-w-md">
-                {error}
+                {state.message}
               </p>
               <button
-                onClick={handleNewAnalysis}
+                onClick={reset}
                 className="btn btn-primary"
               >
                 Try Again
