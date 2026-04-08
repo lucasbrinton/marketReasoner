@@ -1,8 +1,5 @@
-/**
- * Rules for Inaction Card
- */
-
 import { PauseCircle } from 'lucide-react';
+import { AnalysisCard } from '../shared';
 
 interface InactionRulesCardProps {
   rules: string[];
@@ -10,13 +7,7 @@ interface InactionRulesCardProps {
 
 export function InactionRulesCard({ rules }: InactionRulesCardProps) {
   return (
-    <div className="card">
-      <div className="flex items-center gap-2 mb-4">
-        <PauseCircle className="w-5 h-5 text-accent" />
-        <h3 className="font-semibold text-text-primary">When NOT to Act</h3>
-        <span className="text-xs text-text-muted">(Rules for Inaction)</span>
-      </div>
-      
+    <AnalysisCard icon={PauseCircle} title="When NOT to Act" subtitle="(Rules for Inaction)">
       <ul className="space-y-2">
         {rules.map((rule, idx) => (
           <li key={idx} className="text-sm text-text-secondary flex items-start gap-2">
@@ -25,6 +16,6 @@ export function InactionRulesCard({ rules }: InactionRulesCardProps) {
           </li>
         ))}
       </ul>
-    </div>
+    </AnalysisCard>
   );
 }

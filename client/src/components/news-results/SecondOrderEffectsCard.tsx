@@ -1,8 +1,5 @@
-/**
- * Second Order Effects Card
- */
-
 import { GitBranch } from 'lucide-react';
+import { AnalysisCard } from '../shared';
 
 interface SecondOrderEffectsCardProps {
   effects: string[];
@@ -10,13 +7,7 @@ interface SecondOrderEffectsCardProps {
 
 export function SecondOrderEffectsCard({ effects }: SecondOrderEffectsCardProps) {
   return (
-    <div className="card">
-      <div className="flex items-center gap-2 mb-4">
-        <GitBranch className="w-5 h-5 text-accent" />
-        <h3 className="font-semibold text-text-primary">Second-Order Effects</h3>
-        <span className="text-xs text-text-muted">(Indirect / Cascading)</span>
-      </div>
-      
+    <AnalysisCard icon={GitBranch} title="Second-Order Effects" subtitle="(Indirect / Cascading)">
       <ul className="space-y-2">
         {effects.map((effect, idx) => (
           <li key={idx} className="text-sm text-text-secondary flex items-start gap-2">
@@ -25,6 +16,6 @@ export function SecondOrderEffectsCard({ effects }: SecondOrderEffectsCardProps)
           </li>
         ))}
       </ul>
-    </div>
+    </AnalysisCard>
   );
 }

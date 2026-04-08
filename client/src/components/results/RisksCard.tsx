@@ -1,9 +1,6 @@
-/**
- * Risks Card
- */
-
 import { AlertTriangle, Clock, Calendar, HelpCircle } from 'lucide-react';
 import { MarketAnalysis } from '../../types';
+import { AnalysisCard } from '../shared';
 
 interface RisksCardProps {
   data: MarketAnalysis['risks'];
@@ -11,12 +8,7 @@ interface RisksCardProps {
 
 export function RisksCard({ data }: RisksCardProps) {
   return (
-    <div className="card">
-      <div className="flex items-center gap-2 mb-4">
-        <AlertTriangle className="w-5 h-5 text-accent" />
-        <h3 className="font-semibold text-text-primary">Risk Assessment</h3>
-      </div>
-      
+    <AnalysisCard icon={AlertTriangle} title="Risk Assessment">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Short-term Risks */}
         <div className="border border-border rounded-lg p-4">
@@ -34,7 +26,7 @@ export function RisksCard({ data }: RisksCardProps) {
             ))}
           </ul>
         </div>
-        
+
         {/* Long-term Risks */}
         <div className="border border-border rounded-lg p-4">
           <div className="flex items-center gap-2 mb-3">
@@ -51,7 +43,7 @@ export function RisksCard({ data }: RisksCardProps) {
             ))}
           </ul>
         </div>
-        
+
         {/* Unknowns */}
         <div className="border border-border rounded-lg p-4">
           <div className="flex items-center gap-2 mb-3">
@@ -68,6 +60,6 @@ export function RisksCard({ data }: RisksCardProps) {
           </ul>
         </div>
       </div>
-    </div>
+    </AnalysisCard>
   );
 }

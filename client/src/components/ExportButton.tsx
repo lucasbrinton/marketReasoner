@@ -1,9 +1,3 @@
-/**
- * Export Button Component
- * 
- * Exports the analysis content as a PDF using html2canvas + jspdf approach.
- */
-
 import { useState, RefObject } from 'react';
 import { Download, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';

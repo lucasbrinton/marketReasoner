@@ -1,11 +1,9 @@
 import { AnalysisResponse, NewsAnalysisResponse, RiskProfileResponse, StrategySimulationResponse, StockScreenResponse, DailyRoutineResponse, AnalysisRequest, NewsAnalysisRequest, RiskProfileRequest, StrategySimulationRequest, StockScreenRequest, DailyRoutineRequest } from '../types';
 
-// Storage keys
 const HISTORY_KEY = 'marketmind-history';
 const DARK_MODE_KEY = 'marketmind-dark-mode';
 const MAX_HISTORY_ITEMS = 50;
 
-// History item types
 export interface StockHistoryItem {
   id: string;
   type: 'stock';
@@ -65,8 +63,8 @@ export function getHistory(): HistoryItem[] {
     const stored = localStorage.getItem(HISTORY_KEY);
     if (!stored) return [];
     return JSON.parse(stored) as HistoryItem[];
-  } catch {
-    console.error('Failed to parse history from localStorage');
+  } catch (error) {
+    console.error('[storage] Failed to parse history from localStorage:', error);
     return [];
   }
 }
@@ -114,40 +112,54 @@ export function saveDailyResult(input: DailyRoutineRequest, output: DailyRoutine
 
 function addToHistory(item: HistoryItem): void {
   const history = getHistory();
-  
-  // Add new item at the beginning
+
   history.unshift(item);
-  
-  // Prune if exceeds max
+
   if (history.length > MAX_HISTORY_ITEMS) {
     history.splice(MAX_HISTORY_ITEMS);
   }
-  
+
   try {
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-  } catch (e) {
-    console.error('Failed to save history to localStorage', e);
+  } catch (error) {
+    console.error('[storage] Failed to save history to localStorage:', error);
   }
 }
 
 export function clearHistory(): void {
-  localStorage.removeItem(HISTORY_KEY);
+  try {
+    localStorage.removeItem(HISTORY_KEY);
+  } catch (error) {
+    console.error('[storage] Failed to clear history:', error);
+  }
 }
 
 export function deleteHistoryItem(id: string): void {
-  const history = getHistory().filter(item => item.id !== id);
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  try {
+    const history = getHistory().filter(item => item.id !== id);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  } catch (error) {
+    console.error('[storage] Failed to delete history item:', { id, error });
+  }
 }
 
 export function getDarkMode(): boolean {
-  const stored = localStorage.getItem(DARK_MODE_KEY);
-  if (stored === null) {
-    // Check system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  try {
+    const stored = localStorage.getItem(DARK_MODE_KEY);
+    if (stored === null) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return stored === 'true';
+  } catch (error) {
+    console.error('[storage] Failed to read dark mode preference:', error);
+    return false;
   }
-  return stored === 'true';
 }
 
 export function setDarkMode(enabled: boolean): void {
-  localStorage.setItem(DARK_MODE_KEY, String(enabled));
+  try {
+    localStorage.setItem(DARK_MODE_KEY, String(enabled));
+  } catch (error) {
+    console.error('[storage] Failed to save dark mode preference:', error);
+  }
 }

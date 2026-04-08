@@ -5,7 +5,8 @@ import { BusinessModelCard } from './BusinessModelCard';
 import { FinancialHealthCard } from './FinancialHealthCard';
 import { CompetitiveEdgeCard } from './CompetitiveEdgeCard';
 import { RisksCard } from './RisksCard';
-import { ConfidenceBadge } from './ConfidenceBadge';
+import { ConfidenceBadge } from '../shared';
+import { CONFIDENCE_CONFIGS } from '../../constants/theme';
 import { ExportButton } from '../ExportButton';
 
 interface AnalysisResultsProps {
@@ -47,7 +48,7 @@ export function AnalysisResults({ response, onNewAnalysis }: AnalysisResultsProp
       {/* Exportable Content */}
       <div ref={exportRef} className="space-y-4">
         {/* Analysis Cards */}
-        <ConfidenceBadge level={data.confidence_level} />
+        <ConfidenceBadge level={data.confidence_level} {...CONFIDENCE_CONFIGS.stock} />
         <BusinessModelCard content={data.business_model} />
         <FinancialHealthCard data={data.financial_health} />
         <CompetitiveEdgeCard data={data.competitive_edge} />

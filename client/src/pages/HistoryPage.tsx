@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { HistoryCard } from '../components/HistoryCard';
 import { getHistory, clearHistory, deleteHistoryItem, HistoryItem } from '../utils/storage';
+import { MODULE_COLORS } from '../constants/theme';
+import type { ModuleType } from '../constants/theme';
 
 export function HistoryPage() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -38,14 +40,13 @@ export function HistoryPage() {
   }, {});
 
   const filterTabs = [
-    { key: 'all', label: 'All', color: 'bg-accent' },
-    { key: 'stock', label: 'Stock', color: 'bg-blue-600' },
-    { key: 'news', label: 'News', color: 'bg-purple-600' },
-    { key: 'risk', label: 'Risk', color: 'bg-green-600' },
-    { key: 'strategy', label: 'Strategy', color: 'bg-amber-600' },
-    { key: 'screener', label: 'Screener', color: 'bg-cyan-600' },
-    { key: 'daily', label: 'Daily', color: 'bg-pink-600' },
-  ] as const;
+    { key: 'all' as const, label: 'All', color: 'bg-accent' },
+    ...(['stock', 'news', 'risk', 'strategy', 'screener', 'daily'] as const).map(key => ({
+      key,
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      color: MODULE_COLORS[key as ModuleType].solid,
+    })),
+  ];
 
   return (
     <motion.div

@@ -1,8 +1,3 @@
-/**
- * Risk Form Component
- * 
- * Collects investor profile: age, goals, drawdown tolerance, capital stability
- */
 
 import { useState } from 'react';
 import { Shield, User, Target, TrendingDown, Wallet } from 'lucide-react';

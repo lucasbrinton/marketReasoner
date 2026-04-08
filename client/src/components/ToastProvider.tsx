@@ -1,9 +1,3 @@
-/**
- * Toast Provider Setup
- * 
- * Wraps the app with react-hot-toast Toaster component.
- */
-
 import { Toaster } from 'react-hot-toast';
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {

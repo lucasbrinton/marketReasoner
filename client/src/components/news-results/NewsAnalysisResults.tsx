@@ -1,13 +1,8 @@
-/**
- * News Analysis Results Display
- * 
- * Renders the full news impact analysis in organized cards.
- */
-
 import { useRef } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { NewsAnalysisResponse } from '../../types';
-import { NewsConfidenceBadge } from './NewsConfidenceBadge';
+import { ConfidenceBadge } from '../shared';
+import { CONFIDENCE_CONFIGS } from '../../constants/theme';
 import { ShortTermImpactCard } from './ShortTermImpactCard';
 import { LongTermImpactCard } from './LongTermImpactCard';
 import { SecondOrderEffectsCard } from './SecondOrderEffectsCard';
@@ -53,7 +48,7 @@ export function NewsAnalysisResults({ response, onNewAnalysis }: NewsAnalysisRes
       {/* Exportable Content */}
       <div ref={exportRef} className="space-y-4">
         {/* Analysis Cards */}
-        <NewsConfidenceBadge level={data.confidence_level} />
+        <ConfidenceBadge level={data.confidence_level} {...CONFIDENCE_CONFIGS.news} />
         <ShortTermImpactCard data={data.short_term_impact} />
         <LongTermImpactCard data={data.long_term_impact} />
         <SecondOrderEffectsCard effects={data.second_order_effects} />

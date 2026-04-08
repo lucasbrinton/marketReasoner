@@ -1,7 +1,3 @@
-/**
- * Criterion Card - Shows pass/fail badge and explanation
- */
-
 import { CheckCircle2, XCircle } from 'lucide-react';
 
 interface CriterionCardProps {

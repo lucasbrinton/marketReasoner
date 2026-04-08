@@ -1,11 +1,8 @@
-/**
- * Strategy Simulation Results Display
- */
-
 import { useRef } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { StrategySimulationResponse } from '../../types';
-import { StrategyConfidenceBadge } from './StrategyConfidenceBadge';
+import { ConfidenceBadge } from '../shared';
+import { CONFIDENCE_CONFIGS } from '../../constants/theme';
 import { BehaviorInRegimesCard } from './BehaviorInRegimesCard';
 import { FailureModesCard } from './FailureModesCard';
 import { EmotionalTrapsCard } from './EmotionalTrapsCard';
@@ -63,7 +60,7 @@ export function StrategySimulationResults({ response, onNewSimulation }: Strateg
 
       {/* Exportable Content */}
       <div ref={exportRef} className="space-y-4">
-        <StrategyConfidenceBadge level={data.confidence_level} />
+        <ConfidenceBadge level={data.confidence_level} {...CONFIDENCE_CONFIGS.strategy} />
         <BehaviorInRegimesCard data={data.behavior_in_regimes} />
         <FailureModesCard modes={data.failure_modes} />
         <EmotionalTrapsCard traps={data.emotional_traps} />

@@ -1,11 +1,9 @@
-/**
- * Stock Screening Results Display
- */
-
 import { useRef } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { StockScreenResponse } from '../../types';
-import { ScreenerConfidenceBadge } from './ScreenerConfidenceBadge';
+import { CheckCircle2 } from 'lucide-react';
+import { ConfidenceBadge } from '../shared';
+import { CONFIDENCE_CONFIGS } from '../../constants/theme';
 import { CriterionCard } from './CriterionCard';
 import { OverallAssessmentCard } from './OverallAssessmentCard';
 import { WeaknessesCard } from './WeaknessesCard';
@@ -60,7 +58,16 @@ export function ScreenerResults({ response, onNewScreen }: ScreenerResultsProps)
 
       {/* Exportable Content */}
       <div ref={exportRef} className="space-y-4">
-        <ScreenerConfidenceBadge level={data.confidence_level} passCount={passCount} />
+        <ConfidenceBadge
+          level={data.confidence_level}
+          {...CONFIDENCE_CONFIGS.screener}
+          extra={
+            <div className="flex items-center gap-2 text-sm">
+              <CheckCircle2 className="w-4 h-4 text-success" />
+              <span className="text-text-secondary">{passCount}/5 criteria passed</span>
+            </div>
+          }
+        />
         
         {/* Criteria Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

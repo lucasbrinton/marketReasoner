@@ -1,9 +1,3 @@
-/**
- * Error State Component
- * 
- * Displayed when analysis fails.
- */
-
 import { AlertCircle, RefreshCw } from 'lucide-react';
 
 interface ErrorStateProps {

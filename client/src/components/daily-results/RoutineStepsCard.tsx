@@ -1,35 +1,25 @@
-/**
- * Routine Steps Card - Shows numbered steps
- */
-
 import { ListOrdered, CheckSquare } from 'lucide-react';
 import { RoutineSteps } from '../../types';
+import { AnalysisCard } from '../shared';
 
 interface RoutineStepsCardProps {
   steps: RoutineSteps;
 }
 
 export function RoutineStepsCard({ steps }: RoutineStepsCardProps) {
-  // Convert steps object to array
   const stepArray = Object.entries(steps)
-    .filter(([_, value]) => value) // Remove undefined/empty steps
-    .sort(([a], [b]) => a.localeCompare(b)) // Sort by step number
+    .filter(([, value]) => value)
+    .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, value]) => ({
       number: parseInt(key.replace('step', '')),
-      description: value as string
+      description: value as string,
     }));
 
   return (
-    <div className="card">
-      <div className="flex items-center gap-2 mb-4">
-        <ListOrdered className="w-5 h-5 text-accent" />
-        <h3 className="font-semibold text-text-primary">Daily Routine Steps</h3>
-        <span className="text-xs text-text-muted">({stepArray.length} steps)</span>
-      </div>
-      
+    <AnalysisCard icon={ListOrdered} title="Daily Routine Steps" subtitle={`(${stepArray.length} steps)`}>
       <div className="space-y-3">
         {stepArray.map((step) => (
-          <div 
+          <div
             key={step.number}
             className="flex items-start gap-3 p-3 bg-surface-alt rounded-lg border border-border"
           >
@@ -43,6 +33,6 @@ export function RoutineStepsCard({ steps }: RoutineStepsCardProps) {
           </div>
         ))}
       </div>
-    </div>
+    </AnalysisCard>
   );
 }

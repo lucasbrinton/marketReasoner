@@ -2,12 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  TrendingUp,
-  Newspaper,
-  Shield,
-  Lightbulb,
-  Search,
-  Brain,
   History,
   CheckCircle2,
   XCircle,
@@ -16,24 +10,17 @@ import {
 } from 'lucide-react';
 import { checkHealth } from '../api/client';
 import { getHistory, HistoryItem } from '../utils/storage';
+import { MODULE_COLORS, MODULE_ICONS } from '../constants/theme';
+import type { ModuleType } from '../constants/theme';
 
-const modules = [
-  { path: '/stocks', label: 'Stock Analysis', icon: TrendingUp, color: 'blue', description: 'Deep analysis of any stock with AI reasoning' },
-  { path: '/news', label: 'News Impact', icon: Newspaper, color: 'purple', description: 'Analyze how news affects stocks and sectors' },
-  { path: '/risk', label: 'Risk Profiler', icon: Shield, color: 'green', description: 'Build personalized risk management frameworks' },
-  { path: '/strategy', label: 'Strategy Simulator', icon: Lightbulb, color: 'amber', description: 'Simulate and stress-test trading strategies' },
-  { path: '/screener', label: 'Stock Screener', icon: Search, color: 'cyan', description: 'Screen stocks against quality criteria' },
-  { path: '/daily', label: 'Daily Brain', icon: Brain, color: 'pink', description: 'Generate daily market review routines' },
+const modules: { path: string; label: string; moduleType: ModuleType; description: string }[] = [
+  { path: '/stocks', label: 'Stock Analysis', moduleType: 'stock', description: 'Deep analysis of any stock with AI reasoning' },
+  { path: '/news', label: 'News Impact', moduleType: 'news', description: 'Analyze how news affects stocks and sectors' },
+  { path: '/risk', label: 'Risk Profiler', moduleType: 'risk', description: 'Build personalized risk management frameworks' },
+  { path: '/strategy', label: 'Strategy Simulator', moduleType: 'strategy', description: 'Simulate and stress-test trading strategies' },
+  { path: '/screener', label: 'Stock Screener', moduleType: 'screener', description: 'Screen stocks against quality criteria' },
+  { path: '/daily', label: 'Daily Brain', moduleType: 'daily', description: 'Generate daily market review routines' },
 ];
-
-const colorClasses: Record<string, { bg: string; text: string; border: string }> = {
-  blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-600 dark:text-blue-400', border: 'border-blue-200 dark:border-blue-800' },
-  purple: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-600 dark:text-purple-400', border: 'border-purple-200 dark:border-purple-800' },
-  green: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-600 dark:text-green-400', border: 'border-green-200 dark:border-green-800' },
-  amber: { bg: 'bg-amber-100 dark:bg-amber-900/30', text: 'text-amber-600 dark:text-amber-400', border: 'border-amber-200 dark:border-amber-800' },
-  cyan: { bg: 'bg-cyan-100 dark:bg-cyan-900/30', text: 'text-cyan-600 dark:text-cyan-400', border: 'border-cyan-200 dark:border-cyan-800' },
-  pink: { bg: 'bg-pink-100 dark:bg-pink-900/30', text: 'text-pink-600 dark:text-pink-400', border: 'border-pink-200 dark:border-pink-800' }
-};
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -133,7 +120,8 @@ export function DashboardPage() {
       {/* Module Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {modules.map((module, idx) => {
-          const colors = colorClasses[module.color];
+          const colors = MODULE_COLORS[module.moduleType];
+          const ModuleIcon = MODULE_ICONS[module.moduleType];
           return (
             <motion.button
               key={module.path}
@@ -145,7 +133,7 @@ export function DashboardPage() {
             >
               <div className="flex items-start gap-3">
                 <div className={`p-2 rounded-lg ${colors.bg}`}>
-                  <module.icon className={`w-6 h-6 ${colors.text}`} />
+                  <ModuleIcon className={`w-6 h-6 ${colors.text}`} />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-text-primary group-hover:text-accent transition-colors">

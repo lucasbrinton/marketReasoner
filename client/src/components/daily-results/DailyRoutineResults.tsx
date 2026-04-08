@@ -1,11 +1,9 @@
-/**
- * Daily Routine Results Display
- */
-
 import { useRef } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { DailyRoutineResponse } from '../../types';
-import { DailyConfidenceBadge } from './DailyConfidenceBadge';
+import { Clock } from 'lucide-react';
+import { ConfidenceBadge } from '../shared';
+import { CONFIDENCE_CONFIGS } from '../../constants/theme';
 import { RoutineStepsCard } from './RoutineStepsCard';
 import { TimeAllocationCard } from './TimeAllocationCard';
 import { TipsCard } from './TipsCard';
@@ -22,7 +20,7 @@ export function DailyRoutineResults({ response, onNewRoutine }: DailyRoutineResu
   const exportRef = useRef<HTMLDivElement>(null);
 
   // Count steps
-  const stepCount = Object.entries(data.routine_steps).filter(([_, v]) => v).length;
+  const stepCount = Object.entries(data.routine_steps).filter(([, v]) => v).length;
 
   return (
     <div className="space-y-4">
@@ -53,7 +51,16 @@ export function DailyRoutineResults({ response, onNewRoutine }: DailyRoutineResu
 
       {/* Exportable Content */}
       <div ref={exportRef} className="space-y-4">
-        <DailyConfidenceBadge level={data.confidence_level} timeAllocation={data.time_allocation} />
+        <ConfidenceBadge
+          level={data.confidence_level}
+          {...CONFIDENCE_CONFIGS.daily}
+          extra={
+            <div className="flex items-center gap-2 text-sm">
+              <Clock className="w-4 h-4 text-accent" />
+              <span className="text-text-secondary">{data.time_allocation}</span>
+            </div>
+          }
+        />
         
         <RoutineStepsCard steps={data.routine_steps} />
         <TimeAllocationCard timeAllocation={data.time_allocation} />

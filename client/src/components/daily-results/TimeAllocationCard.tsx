@@ -1,7 +1,3 @@
-/**
- * Time Allocation Card
- */
-
 import { Clock } from 'lucide-react';
 
 interface TimeAllocationCardProps {

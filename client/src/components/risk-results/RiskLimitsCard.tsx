@@ -1,8 +1,5 @@
-/**
- * Risk Limits Card
- */
-
 import { ShieldAlert } from 'lucide-react';
+import { AnalysisCard } from '../shared';
 
 interface RiskLimitsCardProps {
   limits: string[];
@@ -10,12 +7,7 @@ interface RiskLimitsCardProps {
 
 export function RiskLimitsCard({ limits }: RiskLimitsCardProps) {
   return (
-    <div className="card">
-      <div className="flex items-center gap-2 mb-4">
-        <ShieldAlert className="w-5 h-5 text-accent" />
-        <h3 className="font-semibold text-text-primary">Risk Limits & Guardrails</h3>
-      </div>
-      
+    <AnalysisCard icon={ShieldAlert} title="Risk Limits & Guardrails">
       <ul className="space-y-2">
         {limits.map((limit, idx) => (
           <li key={idx} className="text-sm text-text-secondary flex items-start gap-2">
@@ -24,6 +16,6 @@ export function RiskLimitsCard({ limits }: RiskLimitsCardProps) {
           </li>
         ))}
       </ul>
-    </div>
+    </AnalysisCard>
   );
 }

@@ -1,10 +1,3 @@
-/**
- * Analysis Form Component
- * 
- * Form for submitting market analysis requests.
- * Uses React Hook Form + Zod for validation.
- */
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';

@@ -1,13 +1,8 @@
-/**
- * Risk Profile Results Display
- * 
- * Renders the full risk profile analysis in organized cards.
- */
-
 import { useRef } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { RiskProfileResponse } from '../../types';
-import { RiskConfidenceBadge } from './RiskConfidenceBadge';
+import { ConfidenceBadge } from '../shared';
+import { CONFIDENCE_CONFIGS } from '../../constants/theme';
 import { ExposureBandsCard } from './ExposureBandsCard';
 import { RiskLimitsCard } from './RiskLimitsCard';
 import { TimeHorizonsCard } from './TimeHorizonsCard';
@@ -54,7 +49,7 @@ export function RiskProfileResults({ response, onNewAnalysis }: RiskProfileResul
       {/* Exportable Content */}
       <div ref={exportRef} className="space-y-4">
         {/* Analysis Cards */}
-        <RiskConfidenceBadge level={data.confidence_level} />
+        <ConfidenceBadge level={data.confidence_level} {...CONFIDENCE_CONFIGS.risk} />
         <ExposureBandsCard data={data.exposure_bands} />
         <RiskLimitsCard limits={data.risk_limits} />
         <TimeHorizonsCard data={data.time_horizons} />

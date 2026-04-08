@@ -1,8 +1,5 @@
-/**
- * News Risks & Uncertainties Card
- */
-
 import { AlertTriangle } from 'lucide-react';
+import { AnalysisCard } from '../shared';
 
 interface NewsRisksCardProps {
   risks: string[];
@@ -10,12 +7,7 @@ interface NewsRisksCardProps {
 
 export function NewsRisksCard({ risks }: NewsRisksCardProps) {
   return (
-    <div className="card">
-      <div className="flex items-center gap-2 mb-4">
-        <AlertTriangle className="w-5 h-5 text-accent" />
-        <h3 className="font-semibold text-text-primary">Risks & Uncertainties</h3>
-      </div>
-      
+    <AnalysisCard icon={AlertTriangle} title="Risks & Uncertainties">
       <ul className="space-y-2">
         {risks.map((risk, idx) => (
           <li key={idx} className="text-sm text-text-secondary flex items-start gap-2">
@@ -24,6 +16,6 @@ export function NewsRisksCard({ risks }: NewsRisksCardProps) {
           </li>
         ))}
       </ul>
-    </div>
+    </AnalysisCard>
   );
 }

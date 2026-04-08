@@ -1,8 +1,5 @@
-/**
- * Tips for Consistency Card
- */
-
 import { Lightbulb } from 'lucide-react';
+import { AnalysisCard } from '../shared';
 
 interface TipsCardProps {
   tips: string[];
@@ -10,12 +7,7 @@ interface TipsCardProps {
 
 export function TipsCard({ tips }: TipsCardProps) {
   return (
-    <div className="card border-l-4 border-l-success">
-      <div className="flex items-center gap-2 mb-4">
-        <Lightbulb className="w-5 h-5 text-success" />
-        <h3 className="font-semibold text-text-primary">Tips for Consistency</h3>
-      </div>
-      
+    <AnalysisCard icon={Lightbulb} title="Tips for Consistency" iconClassName="text-success" className="border-l-4 border-l-success">
       <ul className="space-y-2">
         {tips.map((tip, idx) => (
           <li key={idx} className="text-sm text-text-secondary flex items-start gap-2">
@@ -24,6 +16,6 @@ export function TipsCard({ tips }: TipsCardProps) {
           </li>
         ))}
       </ul>
-    </div>
+    </AnalysisCard>
   );
 }

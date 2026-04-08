@@ -1,7 +1,3 @@
-/**
- * Dark Mode Toggle Component
- */
-
 import { Sun, Moon } from 'lucide-react';
 
 interface DarkModeToggleProps {

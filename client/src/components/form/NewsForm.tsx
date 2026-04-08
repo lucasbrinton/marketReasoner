@@ -1,9 +1,3 @@
-/**
- * News Analysis Form Component
- * 
- * Form for submitting news impact analysis requests.
- * Uses React Hook Form + Zod for validation.
- */
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

@@ -1,9 +1,6 @@
-/**
- * Time Horizons Card
- */
-
 import { Clock, Calendar, CalendarRange } from 'lucide-react';
 import { RiskProfile } from '../../types';
+import { AnalysisCard } from '../shared';
 
 interface TimeHorizonsCardProps {
   data: RiskProfile['time_horizons'];
@@ -11,14 +8,8 @@ interface TimeHorizonsCardProps {
 
 export function TimeHorizonsCard({ data }: TimeHorizonsCardProps) {
   return (
-    <div className="card">
-      <div className="flex items-center gap-2 mb-4">
-        <Calendar className="w-5 h-5 text-accent" />
-        <h3 className="font-semibold text-text-primary">Time Horizon Guidance</h3>
-      </div>
-      
+    <AnalysisCard icon={Calendar} title="Time Horizon Guidance">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Short Term */}
         <div className="border border-border rounded-lg p-4">
           <div className="flex items-center gap-2 mb-3">
             <Clock className="w-4 h-4 text-blue-500" />
@@ -27,8 +18,7 @@ export function TimeHorizonsCard({ data }: TimeHorizonsCardProps) {
           </div>
           <p className="text-sm text-text-secondary">{data.short}</p>
         </div>
-        
-        {/* Medium Term */}
+
         <div className="border border-border rounded-lg p-4">
           <div className="flex items-center gap-2 mb-3">
             <Calendar className="w-4 h-4 text-amber-500" />
@@ -37,8 +27,7 @@ export function TimeHorizonsCard({ data }: TimeHorizonsCardProps) {
           </div>
           <p className="text-sm text-text-secondary">{data.medium}</p>
         </div>
-        
-        {/* Long Term */}
+
         <div className="border border-border rounded-lg p-4">
           <div className="flex items-center gap-2 mb-3">
             <CalendarRange className="w-4 h-4 text-green-500" />
@@ -48,6 +37,6 @@ export function TimeHorizonsCard({ data }: TimeHorizonsCardProps) {
           <p className="text-sm text-text-secondary">{data.long}</p>
         </div>
       </div>
-    </div>
+    </AnalysisCard>
   );
 }
