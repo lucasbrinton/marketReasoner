@@ -57,14 +57,6 @@ export function RiskProfileResults({ response, onNewAnalysis }: RiskProfileResul
         <InactionRulesCard rules={data.rules_for_inaction} />
       </div>
 
-      {/* Disclaimer */}
-      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mt-6">
-        <p className="text-sm text-amber-800 dark:text-amber-200">
-          <strong>⚠️ Important:</strong> This risk framework is for educational purposes only. 
-          It does not constitute financial advice. Allocation ranges are general guidelines, not specific recommendations.
-          Always consult with a qualified financial advisor before making investment decisions.
-        </p>
-      </div>
     </div>
   );
 }

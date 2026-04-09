@@ -70,7 +70,7 @@ export function ScreenerResults({ response, onNewScreen }: ScreenerResultsProps)
         />
         
         {/* Criteria Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 [&>:last-child:nth-child(odd)]:md:col-span-2 [&>:last-child:nth-child(odd)]:md:max-w-[calc(50%-0.5rem)] [&>:last-child:nth-child(odd)]:md:mx-auto">
           {criteria.map((criterion) => (
             <CriterionCard 
               key={criterion.key}
@@ -85,14 +85,6 @@ export function ScreenerResults({ response, onNewScreen }: ScreenerResultsProps)
         <WeaknessesCard weaknesses={data.weaknesses} />
       </div>
 
-      {/* Disclaimer */}
-      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mt-6">
-        <p className="text-sm text-amber-800 dark:text-amber-200">
-          <strong>⚠️ Important:</strong> This screening is for educational purposes only. 
-          It is not a buy or sell recommendation. Passing criteria does not guarantee future performance.
-          Always conduct your own research.
-        </p>
-      </div>
     </div>
   );
 }

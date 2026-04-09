@@ -1,4 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { Search, Info, DollarSign, TrendingUp, Shield, Award, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -7,10 +9,19 @@ import { saveScreenerResult } from '../utils/storage';
 import { useAnalysis } from '../hooks/useAnalysis';
 import { AnalysisLoadingState } from '../components/states/AnalysisLoadingState';
 import { ScreenerResults } from '../components/screener-results/ScreenerResults';
-import type { StockScreenRequest, StockScreenResponse } from '../types';
+import type { StockScreenResponse } from '../types';
+import { StockScreenRequestSchema, type StockScreenRequest } from '../types';
 
 export function ScreenerPage() {
-  const [ticker, setTicker] = useState('');
+  const {
+    register,
+    handleSubmit,
+    reset: resetForm,
+    formState: { errors }
+  } = useForm<StockScreenRequest>({
+    resolver: zodResolver(StockScreenRequestSchema),
+    defaultValues: { ticker: '' }
+  });
 
   const saveFn = useCallback((request: StockScreenRequest, response: StockScreenResponse) => {
     saveScreenerResult(request, response);
@@ -19,20 +30,12 @@ export function ScreenerPage() {
 
   const { state, submit, reset } = useAnalysis(screenStock, saveFn);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const trimmedTicker = ticker.trim().toUpperCase();
-    if (!trimmedTicker) {
-      toast.error('Please enter a ticker symbol');
-      return;
-    }
-
-    submit({ ticker: trimmedTicker });
+  const onSubmit = (data: StockScreenRequest) => {
+    submit({ ticker: data.ticker.trim().toUpperCase() });
   };
 
   const handleNewScreen = () => {
-    setTicker('');
+    resetForm();
     reset();
   };
 
@@ -90,7 +93,7 @@ export function ScreenerPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="card"
       >
         <label htmlFor="ticker" className="block text-sm font-medium text-text-primary mb-2">
@@ -100,22 +103,24 @@ export function ScreenerPage() {
           <input
             type="text"
             id="ticker"
-            value={ticker}
-            onChange={(e) => setTicker(e.target.value.toUpperCase())}
             placeholder="e.g., AAPL, MSFT, GOOGL"
-            className="input flex-1"
+            className="input flex-1 uppercase"
             disabled={state.status === 'loading'}
             maxLength={10}
+            {...register('ticker')}
           />
           <button
             type="submit"
-            disabled={state.status === 'loading' || !ticker.trim()}
+            disabled={state.status === 'loading'}
             className="btn btn-primary flex items-center gap-2"
           >
             <Search className="w-4 h-4" />
             Screen
           </button>
         </div>
+        {errors.ticker && (
+          <p className="text-sm text-error mt-1">{errors.ticker.message}</p>
+        )}
         <p className="text-xs text-text-muted mt-2">
           Tip: Use well-known US stock tickers for best results
         </p>
@@ -155,17 +160,6 @@ export function ScreenerPage() {
         </motion.div>
       )}
 
-      {/* Disclaimer */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="text-center text-xs text-text-muted"
-      >
-        <p>
-          ⚠️ This screener is for educational purposes only and does not constitute investment advice.
-        </p>
-      </motion.div>
     </div>
   );
 }

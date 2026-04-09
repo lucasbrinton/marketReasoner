@@ -41,8 +41,23 @@ input, select, textarea {
   @apply transition-all duration-200;
 }
 
+.dark input, .dark select, .dark textarea {
+  color-scheme: dark;
+}
+
 input::placeholder, textarea::placeholder {
   @apply text-text-muted;
+}
+
+/* Prevent browser autofill from overriding dark mode backgrounds */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill,
+.dark select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--color-surface) inset;
+  -webkit-text-fill-color: var(--color-text-primary);
+  caret-color: var(--color-text-primary);
 }
 
 /* Button base */
@@ -61,7 +76,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .btn-primary:disabled {
-  @apply bg-gray-300 dark:bg-gray-700 cursor-not-allowed hover:bg-gray-300 dark:hover:bg-gray-700;
+  @apply bg-gray-300 dark:bg-gray-600 cursor-not-allowed hover:bg-gray-300 dark:hover:bg-gray-600 dark:text-gray-400;
 }
 
 .btn-secondary {

@@ -13,7 +13,14 @@ import { getHistory, HistoryItem } from '../utils/storage';
 import { MODULE_COLORS, MODULE_ICONS } from '../constants/theme';
 import type { ModuleType } from '../constants/theme';
 
-const modules: { path: string; label: string; moduleType: ModuleType; description: string }[] = [
+interface ModuleConfig {
+  path: string;
+  label: string;
+  moduleType: ModuleType;
+  description: string;
+}
+
+const modules: ModuleConfig[] = [
   { path: '/stocks', label: 'Stock Analysis', moduleType: 'stock', description: 'Deep analysis of any stock with AI reasoning' },
   { path: '/news', label: 'News Impact', moduleType: 'news', description: 'Analyze how news affects stocks and sectors' },
   { path: '/risk', label: 'Risk Profiler', moduleType: 'risk', description: 'Build personalized risk management frameworks' },
@@ -57,7 +64,7 @@ export function DashboardPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -189,18 +196,6 @@ export function DashboardPage() {
         </motion.div>
       )}
 
-      {/* Disclaimer */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="text-center text-xs text-text-muted"
-      >
-        <p>
-          ⚠️ MarketMind is for educational and research purposes only. 
-          Not investment advice. No buy/sell recommendations.
-        </p>
-      </motion.div>
     </div>
   );
 }

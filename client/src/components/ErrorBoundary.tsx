@@ -57,7 +57,7 @@ export class ErrorBoundary extends Component<Props, State> {
               An unexpected error occurred. Please try refreshing the page.
             </p>
             
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <div className="bg-error/5 border border-error/20 rounded-lg p-3 mb-4 text-left">
                 <p className="text-xs font-mono text-error break-all">
                   {this.state.error.message}

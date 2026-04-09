@@ -6,4 +6,4 @@ export {
   CONFIDENCE_CONFIGS,
   PASS_FAIL_COLORS,
 } from './theme';
-export type { ModuleType, ConfidenceLevel } from './theme';
+export type { ModuleType, ConfidenceLevel, ModuleColorConfig, ConfidenceConfig } from './theme';

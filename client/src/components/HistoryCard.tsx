@@ -80,7 +80,7 @@ export function HistoryCard({ item, onDelete }: HistoryCardProps) {
                 {MODULE_LABELS[moduleType]}
               </span>
               <span className={`text-xs font-medium px-2 py-0.5 rounded ${CONFIDENCE_COLORS[confidence]}`}>
-                {confidence} confidence
+                {confidence.charAt(0).toUpperCase() + confidence.slice(1)} Confidence
               </span>
             </div>
             <p className="text-sm text-text-primary font-medium mt-1 truncate">

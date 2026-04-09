@@ -60,6 +60,8 @@ export const StockScreenRequestSchema = z.object({
 
 export type StockScreenRequest = z.infer<typeof StockScreenRequestSchema>;
 
+export type ConfidenceLevel = 'low' | 'medium' | 'high';
+
 export interface MarketAnalysis {
   business_model: string;
   financial_health: {
@@ -76,7 +78,7 @@ export interface MarketAnalysis {
     long_term: string[];
     unknowns: string[];
   };
-  confidence_level: 'low' | 'medium' | 'high';
+  confidence_level: ConfidenceLevel;
 }
 
 export interface NewsAnalysis {
@@ -90,7 +92,7 @@ export interface NewsAnalysis {
   };
   second_order_effects: string[];
   risks_and_uncertainties: string[];
-  confidence_level: 'low' | 'medium' | 'high';
+  confidence_level: ConfidenceLevel;
 }
 
 export interface RiskProfile {
@@ -108,7 +110,7 @@ export interface RiskProfile {
   };
   rebalancing_logic: string;
   rules_for_inaction: string[];
-  confidence_level: 'low' | 'medium' | 'high';
+  confidence_level: ConfidenceLevel;
 }
 
 export interface StrategySimulation {
@@ -121,7 +123,7 @@ export interface StrategySimulation {
   emotional_traps: string[];
   risk_profile: string;
   unknowns: string[];
-  confidence_level: 'low' | 'medium' | 'high';
+  confidence_level: ConfidenceLevel;
 }
 
 export interface CriterionResult {
@@ -137,7 +139,7 @@ export interface StockScreenResult {
   risk_factors: CriterionResult;
   overall_assessment: string;
   weaknesses: string[];
-  confidence_level: 'low' | 'medium' | 'high';
+  confidence_level: ConfidenceLevel;
 }
 
 export interface AnalysisResponse {
@@ -241,9 +243,11 @@ export const RISK_LEVEL_OPTIONS = [
 // Daily Routine Types
 // ============================================================================
 
-export interface DailyRoutineRequest {
-  preferences?: string;
-}
+export const DailyRoutineRequestSchema = z.object({
+  preferences: z.string().max(500, 'Preferences must be at most 500 characters').optional()
+});
+
+export type DailyRoutineRequest = z.infer<typeof DailyRoutineRequestSchema>;
 
 export interface RoutineSteps {
   step1: string;
@@ -260,7 +264,7 @@ export interface DailyRoutineResult {
   time_allocation: string;
   tips_for_consistency: string[];
   potential_pitfalls: string[];
-  confidence_level: 'low' | 'medium' | 'high';
+  confidence_level: ConfidenceLevel;
 }
 
 export interface DailyRoutineResponse {

@@ -1,10 +1,11 @@
 import { TrendingUp, Newspaper, Shield, Lightbulb, Search, Brain } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import type { ConfidenceLevel } from '../types';
 
+export type { ConfidenceLevel };
 export type ModuleType = 'stock' | 'news' | 'risk' | 'strategy' | 'screener' | 'daily';
-export type ConfidenceLevel = 'low' | 'medium' | 'high';
 
-interface ModuleColorConfig {
+export interface ModuleColorConfig {
   bg: string;
   text: string;
   border: string;
@@ -79,7 +80,7 @@ export const PASS_FAIL_COLORS = {
   fail: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
 } as const;
 
-interface ConfidenceConfig {
+export interface ConfidenceConfig {
   title: string;
   descriptions: Record<ConfidenceLevel, string>;
 }

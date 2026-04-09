@@ -7,6 +7,15 @@ import { getHistory, clearHistory, deleteHistoryItem, HistoryItem } from '../uti
 import { MODULE_COLORS } from '../constants/theme';
 import type { ModuleType } from '../constants/theme';
 
+const FILTER_TABS = [
+  { key: 'all' as const, label: 'All', color: 'bg-accent' },
+  ...(['stock', 'news', 'risk', 'strategy', 'screener', 'daily'] as const).map(key => ({
+    key,
+    label: key.charAt(0).toUpperCase() + key.slice(1),
+    color: MODULE_COLORS[key as ModuleType].solid,
+  })),
+];
+
 export function HistoryPage() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -16,6 +25,20 @@ export function HistoryPage() {
   useEffect(() => {
     setHistory(getHistory());
   }, []);
+
+  // Dismiss clear-history modal on Escape key
+  useEffect(() => {
+    if (!showClearConfirm) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowClearConfirm(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showClearConfirm]);
 
   const handleDelete = (id: string) => {
     deleteHistoryItem(id);
@@ -39,14 +62,6 @@ export function HistoryPage() {
     return acc;
   }, {});
 
-  const filterTabs = [
-    { key: 'all' as const, label: 'All', color: 'bg-accent' },
-    ...(['stock', 'news', 'risk', 'strategy', 'screener', 'daily'] as const).map(key => ({
-      key,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
-      color: MODULE_COLORS[key as ModuleType].solid,
-    })),
-  ];
 
   return (
     <motion.div
@@ -82,7 +97,7 @@ export function HistoryPage() {
       {/* Filter Tabs */}
       {history.length > 0 && (
         <div className="flex items-center gap-2">
-          {filterTabs.map(({ key, label, color }) => (
+          {FILTER_TABS.map(({ key, label, color }) => (
             <button
               key={key}
               onClick={() => setFilter(key as typeof filter)}
@@ -146,6 +161,7 @@ export function HistoryPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            role="presentation"
             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
             onClick={() => setShowClearConfirm(false)}
           >

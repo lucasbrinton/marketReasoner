@@ -55,14 +55,6 @@ export function AnalysisResults({ response, onNewAnalysis }: AnalysisResultsProp
         <RisksCard data={data.risks} />
       </div>
 
-      {/* Disclaimer */}
-      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mt-6">
-        <p className="text-sm text-amber-800 dark:text-amber-200">
-          <strong>⚠️ Important:</strong> This analysis is for educational and research purposes only. 
-          It does not constitute investment advice. No buy, sell, or hold recommendations are provided. 
-          Always conduct your own research and consult with qualified professionals before making investment decisions.
-        </p>
-      </div>
     </div>
   );
 }

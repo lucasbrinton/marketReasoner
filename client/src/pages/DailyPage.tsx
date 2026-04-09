@@ -1,4 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { Brain, Info, ListOrdered, Clock, Lightbulb, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -7,10 +9,19 @@ import { saveDailyResult } from '../utils/storage';
 import { useAnalysis } from '../hooks/useAnalysis';
 import { AnalysisLoadingState } from '../components/states/AnalysisLoadingState';
 import { DailyRoutineResults } from '../components/daily-results/DailyRoutineResults';
-import type { DailyRoutineRequest, DailyRoutineResponse } from '../types';
+import type { DailyRoutineResponse } from '../types';
+import { DailyRoutineRequestSchema, type DailyRoutineRequest } from '../types';
 
 export function DailyPage() {
-  const [preferences, setPreferences] = useState('');
+  const {
+    register,
+    handleSubmit,
+    reset: resetForm,
+    formState: { errors }
+  } = useForm<DailyRoutineRequest>({
+    resolver: zodResolver(DailyRoutineRequestSchema),
+    defaultValues: { preferences: '' }
+  });
 
   const saveFn = useCallback((request: DailyRoutineRequest, response: DailyRoutineResponse) => {
     saveDailyResult(request, response);
@@ -19,13 +30,12 @@ export function DailyPage() {
 
   const { state, submit, reset } = useAnalysis(generateRoutine, saveFn);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    submit({ preferences: preferences.trim() });
+  const onSubmit = (data: DailyRoutineRequest) => {
+    submit({ preferences: data.preferences?.trim() });
   };
 
   const handleNewRoutine = () => {
-    setPreferences('');
+    resetForm();
     reset();
   };
 
@@ -68,11 +78,11 @@ export function DailyPage() {
           <Info className="w-5 h-5 text-accent mt-0.5" />
           <div className="text-sm text-text-secondary">
             <p className="font-medium text-text-primary mb-1">What You'll Get</p>
-            <ul className="space-y-1">
-              <li>• <strong>5-7 actionable steps</strong> for daily market review</li>
-              <li>• <strong>Time estimate</strong> (typically under 15 minutes)</li>
-              <li>• <strong>Consistency tips</strong> to build lasting habits</li>
-              <li>• <strong>Common pitfalls</strong> to avoid</li>
+            <ul className="space-y-1 list-disc pl-4">
+              <li><strong>5-7 actionable steps</strong> for daily market review</li>
+              <li><strong>Time estimate</strong> (typically under 15 minutes)</li>
+              <li><strong>Consistency tips</strong> to build lasting habits</li>
+              <li><strong>Common pitfalls</strong> to avoid</li>
             </ul>
           </div>
         </div>
@@ -83,7 +93,7 @@ export function DailyPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="card"
       >
         <label htmlFor="preferences" className="block text-sm font-medium text-text-primary mb-2">
@@ -91,13 +101,15 @@ export function DailyPage() {
         </label>
         <textarea
           id="preferences"
-          value={preferences}
-          onChange={(e) => setPreferences(e.target.value)}
           placeholder="e.g., Focus on tech stocks, prefer morning routine, interested in options..."
           className="input w-full h-24 resize-none"
           disabled={state.status === 'loading'}
           maxLength={500}
+          {...register('preferences')}
         />
+        {errors.preferences && (
+          <p className="text-sm text-error mt-1">{errors.preferences.message}</p>
+        )}
         <p className="text-xs text-text-muted mt-2">
           Leave blank for a general routine, or describe your focus areas
         </p>

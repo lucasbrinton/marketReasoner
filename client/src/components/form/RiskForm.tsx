@@ -83,7 +83,7 @@ export function RiskForm({ onSubmit, isLoading }: RiskFormProps) {
           className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-accent"
           disabled={isLoading}
         />
-        <div className="flex justify-between text-xs text-text-muted mt-1">
+        <div className="flex justify-between text-xs text-text-muted dark:text-gray-400 mt-1">
           <span>Conservative (5%)</span>
           <span>Moderate (25%)</span>
           <span>Aggressive (50%)</span>

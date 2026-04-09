@@ -58,7 +58,7 @@ function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-200">
+    <div className="min-h-screen bg-background transition-colors duration-200 flex flex-col">
       <header className="bg-surface border-b border-border sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between gap-4">
@@ -112,7 +112,7 @@ function Layout() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 flex-1">
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<DashboardPage />} />

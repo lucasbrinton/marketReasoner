@@ -22,8 +22,8 @@ export function ScreenerDetails({ item }: ScreenerDetailsProps) {
       <div>
         <h4 className="text-sm font-medium text-text-primary mb-2">Criteria Results</h4>
         <div className="space-y-2">
-          {criteria.map((criterion, i) => (
-            <div key={i} className="flex items-start gap-2">
+          {criteria.map((criterion) => (
+            <div key={criterion.label} className="flex items-start gap-2">
               {criterion.pass ? (
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
               ) : (
